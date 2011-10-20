@@ -100,7 +100,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     {
         final String [] activeGroups = StringUtils.stripAll(StringUtils.split(activation));
 
-        LOG.debug("Active groups: %s", (Object) activeGroups);
+        LOG.debug("Active groups: %s", StringUtils.join(activeGroups, ", "));
 
         final List<NumberDefinition> numbers = Lists.newArrayList();
         final Set<String> groupNames = Sets.newHashSet();

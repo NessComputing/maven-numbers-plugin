@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.google.common.annotations.VisibleForTesting;
+
 public class NumberDefinition
 {
     /** Name of the build property to define. */
@@ -28,7 +30,8 @@ public class NumberDefinition
 
     private String initialValue = "0";
 
-    public NumberDefinition(final String name,
+    @VisibleForTesting
+    NumberDefinition(final String name,
                        final File propertiesFile,
                        final int increment,
                        final int fieldNumber,
@@ -43,6 +46,10 @@ public class NumberDefinition
         this.createProperty = createProperty;
         this.createFile = createFile;
         this.initialValue = initialValue;
+    }
+
+    public NumberDefinition()
+    {
     }
 
     public String getName()

@@ -26,7 +26,7 @@
                             <activation>get-numbers</activation>
                             <numberGroups>
                                 <numberGroup>
-                                    <id>get-numbers</id>
+                                    <name>get-numbers</name>
                                     <numbers>
                                         <number>
                                             <name>test.get.number</name>
