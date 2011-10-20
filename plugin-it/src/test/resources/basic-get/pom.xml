@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>@project.groupId@</groupId>
-    <artifactId>@project.artifactId@-test-get-numbers</artifactId>
-    <version>0.1</version>
+    <groupId>test-group</groupId>
+    <artifactId>test-artifact-basic-get</artifactId>
+    <version>1.0</version>
 
     <build>
         <defaultGoal>package</defaultGoal>
@@ -40,7 +40,6 @@
                 </executions>
             </plugin>
 
-            <!-- use the jar plugin to place the read properties into a place where the verify script can pick them up. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -57,7 +56,7 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>      
+            </plugin>
         </plugins>
     </build>
 </project>

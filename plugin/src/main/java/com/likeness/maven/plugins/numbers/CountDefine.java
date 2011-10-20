@@ -21,14 +21,36 @@ public class CountDefine
     private int fieldNumber = 0;
 
     /** Whether to create an entry in the properties file or not. */
-    private boolean create = false;
+    private boolean createProperty = true;
+
+    /** Whether to create the properties file if missing. */
+    private boolean createFile = true;
+
+    private String initialValue = "0";
+
+    public CountDefine(final String name,
+                       final File propertiesFile,
+                       final int increment,
+                       final int fieldNumber,
+                       final boolean createProperty,
+                       final boolean createFile,
+                       final String initialValue)
+    {
+        this.name = name;
+        this.propertiesFile = propertiesFile;
+        this.increment = increment;
+        this.fieldNumber = fieldNumber;
+        this.createProperty = createProperty;
+        this.createFile = createFile;
+        this.initialValue = initialValue;
+    }
 
     public String getName()
     {
         return name;
     }
 
-    public void setName(final String name)
+    public void setName(String name)
     {
         this.name = name;
     }
@@ -38,7 +60,7 @@ public class CountDefine
         return propertiesFile;
     }
 
-    public void setPropertiesFile(final File propertiesFile)
+    public void setPropertiesFile(File propertiesFile)
     {
         this.propertiesFile = propertiesFile;
     }
@@ -48,7 +70,7 @@ public class CountDefine
         return increment;
     }
 
-    public void setIncrement(final int increment)
+    public void setIncrement(int increment)
     {
         this.increment = increment;
     }
@@ -58,19 +80,39 @@ public class CountDefine
         return fieldNumber;
     }
 
-    public void setFieldNumber(final int fieldNumber)
+    public void setFieldNumber(int fieldNumber)
     {
         this.fieldNumber = fieldNumber;
     }
 
-    public boolean isCreate()
+    public boolean isCreateProperty()
     {
-        return create;
+        return createProperty;
     }
 
-    public void setCreate(final boolean create)
+    public void setCreateProperty(boolean createProperty)
     {
-        this.create = create;
+        this.createProperty = createProperty;
+    }
+
+    public boolean isCreateFile()
+    {
+        return createFile;
+    }
+
+    public void setCreateFile(boolean createFile)
+    {
+        this.createFile = createFile;
+    }
+
+    public String getInitialValue()
+    {
+        return initialValue;
+    }
+
+    public void setInitialValue(String initialValue)
+    {
+        this.initialValue = initialValue;
     }
 
     @Override
@@ -79,19 +121,33 @@ public class CountDefine
         if (!(other instanceof CountDefine))
             return false;
         CountDefine castOther = (CountDefine) other;
-        return new EqualsBuilder().append(name, castOther.name).append(propertiesFile, castOther.propertiesFile).append(increment, castOther.increment).append(fieldNumber, castOther.fieldNumber).append(create, castOther.create).isEquals();
+        return new EqualsBuilder().append(name, castOther.name)
+            .append(propertiesFile, castOther.propertiesFile)
+            .append(increment, castOther.increment)
+            .append(fieldNumber, castOther.fieldNumber)
+            .append(createProperty, castOther.createProperty)
+            .append(createFile, castOther.createFile)
+            .append(initialValue, castOther.initialValue)
+            .isEquals();
     }
 
     @Override
     public int hashCode()
     {
-        return new HashCodeBuilder().append(name).append(propertiesFile).append(increment).append(fieldNumber).append(create).toHashCode();
+        return new HashCodeBuilder().append(name).append(propertiesFile).append(increment).append(fieldNumber).append(createProperty).append(createFile).append(initialValue).toHashCode();
     }
 
     @Override
     public String toString()
     {
-        return new ToStringBuilder(this).append("name", name).append("propertiesFile", propertiesFile).append("increment", increment).append("fieldNumber", fieldNumber).append("create", create).toString();
+        return new ToStringBuilder(this).append("name", name)
+            .append("propertiesFile", propertiesFile)
+            .append("increment", increment)
+            .append("fieldNumber", fieldNumber)
+            .append("createProperty", createProperty)
+            .append("createFile", createFile)
+            .append("initialValue", initialValue)
+            .toString();
     }
 
 
