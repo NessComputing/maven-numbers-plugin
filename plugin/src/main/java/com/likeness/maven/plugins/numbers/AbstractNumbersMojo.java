@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
@@ -17,7 +18,9 @@ import org.apache.maven.project.MavenProject;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.io.Closeables;
 import com.likeness.maven.plugins.numbers.util.Log;
 import com.pyx4j.log4j.MavenLogAppender;
@@ -36,11 +39,11 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected MavenProject project;
 
     /**
-     * Count groups.
-     * @parameter expression="${project.countGroups}"
+     * Number groups.
+     * @parameter expression="${project.numberGroups}"
      * @readonly
      */
-    protected List<CountDefine> countDefines;
+    protected List<NumberGroup> numberGroups;
 
     /**
      * Skip the plugin execution.
@@ -59,7 +62,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected final Log LOG = Log.findLog();
 
     protected final Map<File, Properties> propertiesFiles = Maps.newHashMap();
-    protected final Map<String, String> counters = Maps.newHashMap();
+    protected final Map<String, String> definedNumbers = Maps.newHashMap();
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -93,53 +96,77 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
      */
     protected abstract void doExecute() throws Exception;
 
-    protected void loadDefines()
+    protected List<NumberDefinition> getNumberDefines()
+    {
+        final String [] activeGroups = StringUtils.stripAll(StringUtils.split(activation));
+
+        LOG.debug("Active groups: %s", (Object) activeGroups);
+
+        final List<NumberDefinition> numbers = Lists.newArrayList();
+        final Set<String> groupNames = Sets.newHashSet();
+
+        for (final NumberGroup numberGroup : numberGroups) {
+            final String name = StringUtils.trimToEmpty(numberGroup.getName());
+            Preconditions.checkArgument(StringUtils.isNotBlank(name), "Empty or missing id for number group found!");
+            Preconditions.checkArgument(!groupNames.contains(name), "Number group '%s' was defined multiple times!", name);
+            groupNames.add(name);
+            for (String activeGroup : activeGroups) {
+                if (StringUtils.equals(activeGroup, name)) {
+                    numbers.addAll(numberGroup.getNumbers());
+                }
+            }
+        }
+        LOG.debug("Found %d numbers", numbers.size());
+        return numbers;
+    }
+
+    protected void loadDefines(final List<NumberDefinition> numbers)
         throws Exception
     {
         // Load all defined properties files and make sure that the configuration
         // is valid.
-        for (CountDefine countDefine : countDefines) {
-            final String name = countDefine.getName();
-            Preconditions.checkArgument(StringUtils.isNotBlank(name), "Empty or missing name for count definition found!");
-            Preconditions.checkArgument(!counters.containsKey(name), "Counter '%s' was defined multiple times!", name);
-            counters.put(name, "");
-            locateProperties(countDefine);
+        for (NumberDefinition number : numbers) {
+            final String name = number.getName();
+            Preconditions.checkArgument(StringUtils.isNotBlank(name), "Empty or missing name for number definition found!");
+            Preconditions.checkArgument(!definedNumbers.containsKey(name), "Number '%s' was defined multiple times!", name);
+            definedNumbers.put(name, "");
+            locateProperties(number);
         }
     }
 
-    protected void createCounters(final List<CountDefine> countDefines)
+    protected void defineNumbers(final List<NumberDefinition> numberDefines)
         throws Exception
     {
-        for (CountDefine countDefine : countDefines) {
-            final String name = countDefine.getName();
-            Preconditions.checkState("".equals(counters.get(name)), "Unknown Counter '%s' found!", name);
+        for (NumberDefinition numberDefine : numberDefines) {
+            final String name = numberDefine.getName();
+            Preconditions.checkState("".equals(definedNumbers.get(name)), "Unknown Number '%s' found!", name);
 
-            final File propertiesFile = countDefine.getPropertiesFile();
+            final File propertiesFile = numberDefine.getPropertiesFile();
             if (propertiesFile == null) {
-                // Transient counters are set to 0.
-                counters.put(name, Objects.firstNonNull(countDefine.getInitialValue(), "0"));
+                // Transient numbers are set to 0.
+                definedNumbers.put(name, Objects.firstNonNull(numberDefine.getInitialValue(), "0"));
             }
             else {
                 final Properties props = propertiesFiles.get(propertiesFile);
-                counters.put(name, props.getProperty(name, Objects.firstNonNull(countDefine.getInitialValue(), "0")));
+                definedNumbers.put(name, props.getProperty(name, Objects.firstNonNull(numberDefine.getInitialValue(), "0")));
             }
         }
     }
 
-    private void locateProperties(final CountDefine countDefine)
+    private void locateProperties(final NumberDefinition numberDefine)
         throws Exception
     {
-        final String name = countDefine.getName();
+        final String name = numberDefine.getName();
 
-        final File propertiesFile = countDefine.getPropertiesFile();
+        final File propertiesFile = numberDefine.getPropertiesFile();
         if (propertiesFile == null) {
-            return; // no property file define. This is a transient counter.
+            return; // no property file define. This is a transient number.
         }
 
         if (!propertiesFiles.containsKey(propertiesFile)) {
 
             final boolean exists = propertiesFile.exists();
-            if (!exists && !countDefine.isCreateFile()) {
+            if (!exists && !numberDefine.isCreateFile()) {
                 throw new IllegalArgumentException(format("Properties file '%s' must exist for property '%s'!", propertiesFile, name));
             }
 
@@ -164,7 +191,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
 
             boolean propertyExists = propertiesFiles.containsKey(propertiesFile) && propertiesFiles.get(propertiesFile).containsKey(name);
 
-            if (!propertyExists && !countDefine.isCreateProperty()) {
+            if (!propertyExists && !numberDefine.isCreateProperty()) {
                 throw new IllegalArgumentException(format("Property '%s' does not exist in properties file '%s' and creation is disabled!", name, propertiesFile));
             }
         }

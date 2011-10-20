@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class CountDefine
+public class NumberDefinition
 {
     /** Name of the build property to define. */
     private String name;
@@ -28,7 +28,7 @@ public class CountDefine
 
     private String initialValue = "0";
 
-    public CountDefine(final String name,
+    public NumberDefinition(final String name,
                        final File propertiesFile,
                        final int increment,
                        final int fieldNumber,
@@ -118,9 +118,9 @@ public class CountDefine
     @Override
     public boolean equals(final Object other)
     {
-        if (!(other instanceof CountDefine))
+        if (!(other instanceof NumberDefinition))
             return false;
-        CountDefine castOther = (CountDefine) other;
+        NumberDefinition castOther = (NumberDefinition) other;
         return new EqualsBuilder().append(name, castOther.name)
             .append(propertiesFile, castOther.propertiesFile)
             .append(increment, castOther.increment)

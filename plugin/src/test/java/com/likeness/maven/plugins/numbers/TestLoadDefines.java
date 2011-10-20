@@ -13,9 +13,9 @@ import com.google.common.collect.ImmutableList;
 public class TestLoadDefines
 {
     @Test
-    public void testOneTransientCounter() throws Exception
+    public void testOneTransientNumber() throws Exception
     {
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", null, 1, 1, false, false, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", null, 1, 1, false, false, null)));
         testMojo.loadDefines();
         final Map<File, Properties> propertiesFiles = testMojo.getPropertiesFiles();
         Assert.assertNotNull(propertiesFiles);
@@ -23,9 +23,9 @@ public class TestLoadDefines
     }
 
     @Test
-    public void testTwoTransientCounters() throws Exception
+    public void testTwoTransientNumbers() throws Exception
     {
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", null, 1, 1, false, false, null), new CountDefine("world", null, 1, 1, false, false, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", null, 1, 1, false, false, null), new NumberDefinition("world", null, 1, 1, false, false, null)));
         testMojo.loadDefines();
         final Map<File, Properties> propertiesFiles = testMojo.getPropertiesFiles();
         Assert.assertNotNull(propertiesFiles);
@@ -35,64 +35,64 @@ public class TestLoadDefines
     @Test(expected=IllegalArgumentException.class)
     public void testErrorNameTwice() throws Exception
     {
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", null, 1, 1, false, false, null), new CountDefine("hello", null, 1, 1, false, false, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", null, 1, 1, false, false, null), new NumberDefinition("hello", null, 1, 1, false, false, null)));
         testMojo.loadDefines();
     }
 
     @Test
-    public void testCreateOnePersistentCounter() throws Exception
+    public void testCreateOnePersistentNumber() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        countFile.deleteOnExit();
+        final File numberFile = File.createTempFile("test", null);
+        numberFile.deleteOnExit();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, true, true, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, true, true, null)));
         testMojo.loadDefines();
         final Map<File, Properties> propertiesFiles = testMojo.getPropertiesFiles();
         Assert.assertNotNull(propertiesFiles);
         Assert.assertEquals(1, propertiesFiles.size());
-        Assert.assertTrue(propertiesFiles.containsKey(countFile));
+        Assert.assertTrue(propertiesFiles.containsKey(numberFile));
     }
 
     @Test
-    public void testCreateTwoPersistentCounters() throws Exception
+    public void testCreateTwoPersistentNumbers() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        final File countFile2 = File.createTempFile("test", null);
-        countFile.deleteOnExit();
-        countFile2.deleteOnExit();
+        final File numberFile = File.createTempFile("test", null);
+        final File numberFile2 = File.createTempFile("test", null);
+        numberFile.deleteOnExit();
+        numberFile2.deleteOnExit();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, true, true, null),
-                                                                new CountDefine("world", countFile2, 1, 1, true, true, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, true, true, null),
+                                                                new NumberDefinition("world", numberFile2, 1, 1, true, true, null)));
         testMojo.loadDefines();
         final Map<File, Properties> propertiesFiles = testMojo.getPropertiesFiles();
         Assert.assertNotNull(propertiesFiles);
         Assert.assertEquals(2, propertiesFiles.size());
-        Assert.assertTrue(propertiesFiles.containsKey(countFile));
-        Assert.assertTrue(propertiesFiles.containsKey(countFile2));
+        Assert.assertTrue(propertiesFiles.containsKey(numberFile));
+        Assert.assertTrue(propertiesFiles.containsKey(numberFile2));
     }
 
     @Test
-    public void testCreateTwoPersistentCountersSameFile() throws Exception
+    public void testCreateTwoPersistentNumbersSameFile() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        countFile.deleteOnExit();
+        final File numberFile = File.createTempFile("test", null);
+        numberFile.deleteOnExit();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, true, true, null),
-                                                                new CountDefine("world", countFile, 1, 1, true, true, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, true, true, null),
+                                                                new NumberDefinition("world", numberFile, 1, 1, true, true, null)));
         testMojo.loadDefines();
         final Map<File, Properties> propertiesFiles = testMojo.getPropertiesFiles();
         Assert.assertNotNull(propertiesFiles);
         Assert.assertEquals(1, propertiesFiles.size());
-        Assert.assertTrue(propertiesFiles.containsKey(countFile));
+        Assert.assertTrue(propertiesFiles.containsKey(numberFile));
     }
 
     @Test
-    public void testOnePersistentCounterNoFile() throws Exception
+    public void testOnePersistentNumberNoFile() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        countFile.delete();
+        final File numberFile = File.createTempFile("test", null);
+        numberFile.delete();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, true, true, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, true, true, null)));
         testMojo.loadDefines();
         final Map<File, Properties> propertiesFiles = testMojo.getPropertiesFiles();
         Assert.assertNotNull(propertiesFiles);
@@ -100,46 +100,46 @@ public class TestLoadDefines
     }
 
     @Test
-    public void testCreateOnePersistentCounterNoCreation() throws Exception
+    public void testCreateOnePersistentNumberNoCreation() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        countFile.deleteOnExit();
+        final File numberFile = File.createTempFile("test", null);
+        numberFile.deleteOnExit();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, true, false, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, true, false, null)));
         testMojo.loadDefines();
         final Map<File, Properties> propertiesFiles = testMojo.getPropertiesFiles();
         Assert.assertNotNull(propertiesFiles);
         Assert.assertEquals(1, propertiesFiles.size());
-        Assert.assertTrue(propertiesFiles.containsKey(countFile));
+        Assert.assertTrue(propertiesFiles.containsKey(numberFile));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCreateOnePersistentCounterNoPropertyCreation() throws Exception
+    public void testCreateOnePersistentNumberNoPropertyCreation() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        countFile.deleteOnExit();
+        final File numberFile = File.createTempFile("test", null);
+        numberFile.deleteOnExit();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, false, true, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, false, true, null)));
         testMojo.loadDefines();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testOnePersistentCounterNoFileNoCreation() throws Exception
+    public void testOnePersistentNumberNoFileNoCreation() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        countFile.delete();
+        final File numberFile = File.createTempFile("test", null);
+        numberFile.delete();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, true, false, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, true, false, null)));
         testMojo.loadDefines();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testOnePersistentCounterNoFileNoPropertyCreation() throws Exception
+    public void testOnePersistentNumberNoFileNoPropertyCreation() throws Exception
     {
-        final File countFile = File.createTempFile("test", null);
-        countFile.delete();
+        final File numberFile = File.createTempFile("test", null);
+        numberFile.delete();
 
-        final TestMojo testMojo = new TestMojo(ImmutableList.of(new CountDefine("hello", countFile, 1, 1, false, true, null)));
+        final TestMojo testMojo = new TestMojo(ImmutableList.of(new NumberDefinition("hello", numberFile, 1, 1, false, true, null)));
         testMojo.loadDefines();
     }
 
@@ -147,9 +147,13 @@ public class TestLoadDefines
 
     public static class TestMojo extends AbstractNumbersMojo
     {
-        TestMojo(final List<CountDefine> countDefines)
+        TestMojo(final List<NumberDefinition> numberDefines)
         {
-            super.countDefines = countDefines;
+            final NumberGroup numberGroup = new NumberGroup();
+            numberGroup.setName("test");
+            numberGroup.setNumbers(numberDefines);
+            super.numberGroups = ImmutableList.of(numberGroup);
+            super.activation = "test";
         }
 
         @Override
@@ -162,11 +166,11 @@ public class TestLoadDefines
             return super.propertiesFiles;
         }
 
-        @Override
         public void loadDefines()
             throws Exception
         {
-            super.loadDefines();
+            final List<NumberDefinition> numberDefines = getNumberDefines();
+            super.loadDefines(numberDefines);
         }
 
     }

@@ -27,6 +27,7 @@ public class TestGetNumbersMojo
         final String location = TestUtils.getLocation(TEST_NAME);
         final Verifier verifier = new Verifier(location);
         final List<String> goals = ImmutableList.of("package");
+        verifier.addCliOption("-X");
         verifier.executeGoals(goals);
 
         final File jarLocation = TestUtils.getTargetArtifact(TEST_NAME, "jar");
@@ -38,7 +39,7 @@ public class TestGetNumbersMojo
         final Attributes attributes = manifest.getMainAttributes();
         final String testGetNumberStr = attributes.getValue("Test-Get-Number");
         Assert.assertNotNull(testGetNumberStr);
-        Assert.assertEquals(1L, Long.parseLong(testGetNumberStr));
+        Assert.assertEquals(0L, Long.parseLong(testGetNumberStr));
 
         verifier.verifyErrorFreeLog();
         verifier.resetStreams();
