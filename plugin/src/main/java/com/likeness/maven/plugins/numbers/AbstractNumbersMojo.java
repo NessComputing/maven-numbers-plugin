@@ -40,6 +40,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
 
     /**
      * Number groups.
+     *
      * @parameter expression="${project.numberGroups}"
      * @readonly
      */
