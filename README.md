@@ -18,72 +18,72 @@ Formats:
 - optional separators ({-})
 - properties and other data from the pom.
 
-<configuration>
-    <activeGroups>snapshot,release</activeGroups>
-    <propertyGroups>
-        <propertyGroup>
-            <name>snapshot</name>
-            <activeOnRelease>false</activeOnRelease>
-            <properties>
-                <property>
-                    <name>ness.build.number</name>
-                    <value>#{version}-#{regular}-#{user}</value>
-                </property>
-            </properties>
-        </propertyGroup>
-        <propertyGroup>
-            <name>release</name>
-            <activeOnSnapshot>false</activeOnSnapshot>
-            <properties>
-                <property>
-                    <name>ness.build.number</name>
-                    <value>#{version}</value>
-                </property>
-            </properties>
-        </propertyGroup>
-    </propertyGroups>
-    <numbers>
-        <number>
-            <name>version</name>
-            <propertiesFile>/home/jenkins/builds/build-counter</propertiesFile>
-            <!-- version is maj.min.rev -->
-            <fieldNumber>2</fieldNumber>
-        </number>
-        <number>
-            <name>build</name>
-            <propertiesFile>/home/jenkins/builds/build-counter.properties</propertiesFile>
-            <propertyName>${project.groupId}-${project.artifactId}.counter</propertyName>
-            <onMissingProperty>fail</onMissingProperty>
-            <onMissingFile>fail</onMissingFile>
-            <initialValue>0</initialValue>
-        </number>
-    </numbers>
-    <strings>
-        <string>
-            <name>user</name>
-            <value>${maven.user}</value>
-            <defaultValue>unknown</defaultValue>
-        </string>
-    </strings>
-    <dates>
-        <date>
-            <name>regular</name>
-            <format>yyyyMMdd_ssmmHH</format>
-        </date>
-    </dates>
-    <macros>
-        <macro>
-            <name>revision</name>
-            <type>scm</type>
-            <properties>
-                <property>
-                    <name>revision</name>
-                    <value>tip</value>
-                </property>
-            </properties>
-        </macro>
-    </macros>
-</configuration>
+    <configuration>
+        <activeGroups>snapshot,release</activeGroups>
+        <propertyGroups>
+            <propertyGroup>
+                <name>snapshot</name>
+                <activeOnRelease>false</activeOnRelease>
+                <properties>
+                    <property>
+                        <name>ness.build.number</name>
+                        <value>#{version}-#{regular}-#{user}</value>
+                    </property>
+                </properties>
+            </propertyGroup>
+            <propertyGroup>
+                <name>release</name>
+                <activeOnSnapshot>false</activeOnSnapshot>
+                <properties>
+                    <property>
+                        <name>ness.build.number</name>
+                        <value>#{version}</value>
+                    </property>
+                </properties>
+            </propertyGroup>
+        </propertyGroups>
+        <numbers>
+            <number>
+                <name>version</name>
+                <propertiesFile>/home/jenkins/builds/build-counter</propertiesFile>
+                <!-- version is maj.min.rev -->
+                <fieldNumber>2</fieldNumber>
+            </number>
+            <number>
+                <name>build</name>
+                <propertiesFile>/home/jenkins/builds/build-counter.properties</propertiesFile>
+                <propertyName>${project.groupId}-${project.artifactId}.counter</propertyName>
+                <onMissingProperty>fail</onMissingProperty>
+                <onMissingFile>fail</onMissingFile>
+                <initialValue>0</initialValue>
+            </number>
+        </numbers>
+        <strings>
+            <string>
+                <name>user</name>
+                <value>${maven.user}</value>
+                <defaultValue>unknown</defaultValue>
+            </string>
+        </strings>
+        <dates>
+            <date>
+                <name>regular</name>
+                <format>yyyyMMdd_ssmmHH</format>
+            </date>
+        </dates>
+        <macros>
+            <macro>
+                <name>revision</name>
+                <type>scm</type>
+                <properties>
+                    <property>
+                        <name>revision</name>
+                        <value>tip</value>
+                    </property>
+                </properties>
+            </macro>
+        </macros>
+    </configuration>
 
 Configuration
 =============
@@ -108,18 +108,18 @@ defines which groups are active. The idea is that most of this configuration can
 
 groups and exports a list of properties exposed to the build. 
 
-<propertyGroups>
-    <propertyGroup>
-        <name>...</name>
-        <activeOnRelease>...</activeOnRelease>
-        <activeOnSnapshot>...</activeOnSnapshot>
-        <onDuplicateProperty>...</onDuplicateProperty>
-        <onMissingProperty>...</onMissingProperty>
-        <properties>
-            ...
-        </properties>
-    </propertyGroup>
-</propertyGroups>
+    <propertyGroups>
+        <propertyGroup>
+            <name>...</name>
+            <activeOnRelease>...</activeOnRelease>
+            <activeOnSnapshot>...</activeOnSnapshot>
+            <onDuplicateProperty>...</onDuplicateProperty>
+            <onMissingProperty>...</onMissingProperty>
+            <properties>
+                ...
+            </properties>
+        </propertyGroup>
+    </propertyGroups>
 
 ** name - the name of the property group. Required. Must be unique.
 ** activeOnSnapshot - true, false - this group is active if the current ${project.version} contains "-SNAPSHOT" (default: true)
@@ -129,12 +129,12 @@ groups and exports a list of properties exposed to the build.
 
 ** properties/property - List of properties in this property group
 
-<property>
-    <name>...</name>
-    <value>...</value>
-    <export>...</export>
-    <skip>...</skip>
-</property>
+    <property>
+        <name>...</name>
+        <value>...</value>
+        <export>...</export>
+        <skip>...</skip>
+    </property>
 
 ** name - the name of the property that gets exported. Required. Must be unique in the group.
 ** value - a String that gets interpreted as a format string (see below) and assembled to form the value. Can contain constant values, #{ } groups and ${ } properties (see below).
@@ -145,17 +145,17 @@ groups and exports a list of properties exposed to the build.
 
 A number defines a counter or count.
 
-<number>
-    <name>...</name>
-    <skip>...</skip>
-    <initialValue>...</initialValue>
-    <fieldNumber>...</fieldNumber>
-    <increment>...</increment>
-    <propertiesFile>...</propertiesFile>
-    <propertyName>...</propertyName>
-    <onMissingProperty>...</onMissingProperty>
-    <onMissingFile>...</onMissingFile>
-</number>
+    <number>
+        <name>...</name>
+        <skip>...</skip>
+        <initialValue>...</initialValue>
+        <fieldNumber>...</fieldNumber>
+        <increment>...</increment>
+        <propertiesFile>...</propertiesFile>
+        <propertyName>...</propertyName>
+        <onMissingProperty>...</onMissingProperty>
+        <onMissingFile>...</onMissingFile>
+    </number>
 
 ** name - the name of the number. Required. Must be unique between numbers, strings, dates and macros.
 ** skip - true, false - Whether the counter should be evaluated. Default is false.
@@ -172,16 +172,16 @@ A number defines a counter or count.
 
 Defines a text string for further replacement. This can be used to add default values to ${ } properties.
 
-<string>
-    <name>user</name>
-    <skip>...</skip>
-    <values>
-        <value>...</value>
-        <value>...</value>
-    </values>
-    <blankIsDefault>...</blankIsDefault>
-    <onMissingValue>...</onMissingValue>
-</string>
+    <string>
+        <name>user</name>
+        <skip>...</skip>
+        <values>
+            <value>...</value>
+            <value>...</value>
+        </values>
+        <blankIsDefault>...</blankIsDefault>
+        <onMissingValue>...</onMissingValue>
+    </string>
 
 ** name - the name of the string. Required. Must be unique between numbers, strings, dates and macros.
 ** skip - true, false - Whether the value field should be evaluated. Default is false.
@@ -193,15 +193,15 @@ Defines a text string for further replacement. This can be used to add default v
 
 Defines a date, time or date/time combination. 
 
-<dates>
-    <date>
-        <name>...</name>
-        <skip>...</skip>
-        <format>...</format>
-        <timezone>...</timezone>
-        <value>...</value>
-    </date>
-</dates>
+    <dates>
+        <date>
+            <name>...</name>
+            <skip>...</skip>
+            <format>...</format>
+            <timezone>...</timezone>
+            <value>...</value>
+        </date>
+    </dates>
 
 ** name - the name of the date. Required. Must be unique between numbers, strings, dates and macros.
 ** skip - true, false - Whether the date field should be evaluated. Default is false.
@@ -213,16 +213,16 @@ Defines a date, time or date/time combination.
 
 Macros extend the functionality of the plugin. 
 
-<macros>
-    <macro>
-        <name>...</name>
-        <skip>...</skip>
-        <type>...</type>
-        <class>...</class>
-        <properties>...</properties>
-        <onMissingValue>...</onMissingValue>
-    </macro>
-</macros>
+    <macros>
+        <macro>
+            <name>...</name>
+            <skip>...</skip>
+            <type>...</type>
+            <class>...</class>
+            <properties>...</properties>
+            <onMissingValue>...</onMissingValue>
+        </macro>
+    </macros>
 
 ** name - the name of the macro. Required. Must be unique between numbers, strings, dates and macros.
 ** skip - true, false - Whether the macro should be evaluated. Default is false.
@@ -235,18 +235,18 @@ Macros extend the functionality of the plugin.
 
 The scm macro defines values from the underlying SCM.
 
-<macros>
-    <macro>
-        <name>revision</name>
-        <type>scm</type>
-        <properties>
-            <property>
-                <name>rev</name>
-                <value>tip</value>
-            </property>
-        </properties>
-    </macro>
-</macros>
+    <macros>
+        <macro>
+            <name>revision</name>
+            <type>scm</type>
+            <properties>
+                <property>
+                    <name>rev</name>
+                    <value>tip</value>
+                </property>
+            </properties>
+        </macro>
+    </macros>
 
 ** type is SCM
 ** properties
