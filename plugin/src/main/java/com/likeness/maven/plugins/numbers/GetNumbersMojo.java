@@ -1,8 +1,5 @@
 package com.likeness.maven.plugins.numbers;
 
-import java.util.List;
-import java.util.Map;
-
 import com.likeness.maven.plugins.numbers.util.Log;
 
 
@@ -17,13 +14,6 @@ public class GetNumbersMojo extends AbstractNumbersMojo
 
     protected void doExecute() throws Exception
     {
-        final List<NumberDefinition> numberDefines = getNumberDefines();
-        loadDefines(numberDefines);
-        defineNumbers(numberDefines);
-
-        for (Map.Entry<String, String> number : definedNumbers.entrySet()) {
-            project.getProperties().setProperty(number.getKey(), number.getValue());
-            LOG.debug("Setting number '%s' to %s.", number.getKey(), number.getValue());
-        }
+        LOG.debug("Running GetNumbers");
     }
 }

@@ -1,27 +1,21 @@
 package com.likeness.maven.plugins.numbers;
 
-import static java.lang.String.format;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.common.io.Closeables;
+import com.likeness.maven.plugins.numbers.beans.DateDefinition;
+import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
+import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
+import com.likeness.maven.plugins.numbers.beans.PropertyGroup;
+import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import com.likeness.maven.plugins.numbers.util.Log;
 import com.pyx4j.log4j.MavenLogAppender;
 
@@ -39,14 +33,6 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected MavenProject project;
 
     /**
-     * Number groups.
-     *
-     * @parameter expression="${project.numberGroups}"
-     * @readonly
-     */
-    protected List<NumberGroup> numberGroups;
-
-    /**
      * Skip the plugin execution.
      *
      * @parameter default-value="false"
@@ -54,11 +40,60 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected boolean skip = false;
 
     /**
-     * Groups to activate.
+     * Default action on duplicate properties.
+     *
+     * @parameter default-value="fail"
+     */
+    protected String onDuplicateProperty = "fail";
+
+    /**
+     * Default action on missing properties.
+     *
+     * @parameter default-value="fail"
+     */
+    protected String onMissingProperty = "fail";
+
+    /**
+     * Which groups to activate for this plugin run.
      *
      * @parameter default-value=""
      */
-    protected String activation = "";
+    protected String activeGroups = "";
+
+    /**
+     * Property groups.
+     *
+     * @parameter
+     */
+    protected List<PropertyGroup> propertyGroups;
+
+    /**
+     * Numbers.
+     *
+     * @parameter
+     */
+    protected List<NumberDefinition> numbers;
+
+    /**
+     * Strings.
+     *
+     * @parameter
+     */
+    protected List<StringDefinition> strings;
+
+    /**
+     * Dates.
+     *
+     * @parameter
+     */
+    protected List<DateDefinition> dates;
+
+    /**
+     * Macros.
+     *
+     * @parameter
+     */
+    protected List<MacroDefinition> macros;
 
     protected final Log LOG = Log.findLog();
 
@@ -96,106 +131,4 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
      * Subclasses need to implement this method.
      */
     protected abstract void doExecute() throws Exception;
-
-    protected List<NumberDefinition> getNumberDefines()
-    {
-        final String [] activeGroups = StringUtils.stripAll(StringUtils.split(activation));
-
-        LOG.debug("Active groups: %s", StringUtils.join(activeGroups, ", "));
-
-        final List<NumberDefinition> numbers = Lists.newArrayList();
-        final Set<String> groupNames = Sets.newHashSet();
-
-        for (final NumberGroup numberGroup : numberGroups) {
-            final String name = StringUtils.trimToEmpty(numberGroup.getName());
-            Preconditions.checkArgument(StringUtils.isNotBlank(name), "Empty or missing id for number group found!");
-            Preconditions.checkArgument(!groupNames.contains(name), "Number group '%s' was defined multiple times!", name);
-            groupNames.add(name);
-            for (String activeGroup : activeGroups) {
-                if (StringUtils.equals(activeGroup, name)) {
-                    numbers.addAll(numberGroup.getNumbers());
-                }
-            }
-        }
-        LOG.debug("Found %d numbers", numbers.size());
-        return numbers;
-    }
-
-    protected void loadDefines(final List<NumberDefinition> numbers)
-        throws Exception
-    {
-        // Load all defined properties files and make sure that the configuration
-        // is valid.
-        for (NumberDefinition number : numbers) {
-            final String name = number.getName();
-            Preconditions.checkArgument(StringUtils.isNotBlank(name), "Empty or missing name for number definition found!");
-            Preconditions.checkArgument(!definedNumbers.containsKey(name), "Number '%s' was defined multiple times!", name);
-            definedNumbers.put(name, "");
-            locateProperties(number);
-        }
-    }
-
-    protected void defineNumbers(final List<NumberDefinition> numberDefines)
-        throws Exception
-    {
-        for (NumberDefinition numberDefine : numberDefines) {
-            final String name = numberDefine.getName();
-            Preconditions.checkState("".equals(definedNumbers.get(name)), "Unknown Number '%s' found!", name);
-
-            final File propertiesFile = numberDefine.getPropertiesFile();
-            if (propertiesFile == null) {
-                // Transient numbers are set to 0.
-                definedNumbers.put(name, Objects.firstNonNull(numberDefine.getInitialValue(), "0"));
-            }
-            else {
-                final Properties props = propertiesFiles.get(propertiesFile);
-                definedNumbers.put(name, props.getProperty(name, Objects.firstNonNull(numberDefine.getInitialValue(), "0")));
-            }
-        }
-    }
-
-    private void locateProperties(final NumberDefinition numberDefine)
-        throws Exception
-    {
-        final String name = numberDefine.getName();
-
-        final File propertiesFile = numberDefine.getPropertiesFile();
-        if (propertiesFile == null) {
-            return; // no property file define. This is a transient number.
-        }
-
-        if (!propertiesFiles.containsKey(propertiesFile)) {
-
-            final boolean exists = propertiesFile.exists();
-            if (!exists && !numberDefine.isCreateFile()) {
-                throw new IllegalArgumentException(format("Properties file '%s' must exist for property '%s'!", propertiesFile, name));
-            }
-
-            if (exists) {
-                if (!propertiesFile.canRead() || !propertiesFile.isFile()) {
-                    throw new IllegalStateException(format("Properties file '%s' exists but is not readable or not a file!", propertiesFile));
-                }
-
-                final Properties props = new Properties();
-                InputStream stream = null;
-                try {
-                    stream = new FileInputStream(propertiesFile);
-                    props.load(stream);
-                }
-                finally {
-                    Closeables.closeQuietly(stream);
-                }
-
-                propertiesFiles.put(propertiesFile, props);
-                LOG.debug("Loaded property file '%s'", propertiesFile);
-            }
-
-            boolean propertyExists = propertiesFiles.containsKey(propertiesFile) && propertiesFiles.get(propertiesFile).containsKey(name);
-
-            if (!propertyExists && !numberDefine.isCreateProperty()) {
-                throw new IllegalArgumentException(format("Property '%s' does not exist in properties file '%s' and creation is disabled!", name, propertiesFile));
-            }
-        }
-    }
-
 }
