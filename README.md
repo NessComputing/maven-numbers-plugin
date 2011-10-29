@@ -5,18 +5,24 @@ The Maven Numbers Plugin
 
 "4 8 15 16 23 42" - Lost
 
-Counts:
+Counts
+------
 
 - number count (from a properties file)
 - three digit count (properties file)
 - SCM version (current checkout, tip, arbitrary branch)
 - date (various formats)
 
-Formats:
+Formats
+-------
 
 - format string with the information from above
 - optional separators ({-})
 - properties and other data from the pom.
+
+
+Configuration
+-------------
 
     <configuration>
         <activeGroups>snapshot,release</activeGroups>
@@ -85,18 +91,13 @@ Formats:
         </macros>
     </configuration>
 
-Configuration
-=============
 
 * skip - true, false - When set, skip the execution of the plugin. default is "false".
-
 * onDuplicateProperty - ignore, warn, fail - When a property is defined multiple times, react accordingly. (default: fail)
-
 * onMissingProperty - ignore, warn, fail - When a property definition is incomplete (value missing), react accordingly. (default: fail)
-
 * activeGroups - defines which groups are active. The idea is that most of this configuration can be done in a pluginManagement section and then the <activation> field is used in the actual build profiles to activate various groups. Default: empty (no groups).
 
-* propertyGroup
+### propertyGroup
 
 groups and exports a list of properties exposed to the build. 
 
@@ -113,13 +114,13 @@ groups and exports a list of properties exposed to the build.
         </propertyGroup>
     </propertyGroups>
 
-** id - the id of the property group. Required. Must be unique.
-** activeOnSnapshot - true, false - this group is active if the current ${project.version} contains "-SNAPSHOT" (default: true)
-** activeOnRelease - true, false - this group is active if the current ${project.version} does not contain "-SNAPSHOT" (default: true)
-** onDuplicateProperty - ignore, warn, fail - When a property is defined multiple times, react accordingly. (default: from global config)
-** onMissingProperty - ignore, warn, fail - When a property definition is incomplete (value missing), react accordingly. (default: from global config)
+* id - the id of the property group. Required. Must be unique.
+* activeOnSnapshot - true, false - this group is active if the current ${project.version} contains "-SNAPSHOT" (default: true)
+* activeOnRelease - true, false - this group is active if the current ${project.version} does not contain "-SNAPSHOT" (default: true)
+* onDuplicateProperty - ignore, warn, fail - When a property is defined multiple times, react accordingly. (default: from global config)
+* onMissingProperty - ignore, warn, fail - When a property definition is incomplete (value missing), react accordingly. (default: from global config)
 
-** properties/property - List of properties in this property group
+#### properties/property - List of properties in this property group
 
     <property>
         <name>...</name>
@@ -128,12 +129,12 @@ groups and exports a list of properties exposed to the build.
         <skip>...</skip>
     </property>
 
-** name - the name of the property that gets exported. Required. Must be unique in the group.
-** value - a String that gets interpreted as a format string (see below) and assembled to form the value. Can contain constant values, #{ } groups and ${ } properties (see below).
-** export - true, false - Whether the value should be exported as a property. (default: true)
-** skip - true, false - Whether the property should be evaluated. False implies also "export = false". (default: true)
+* name - the name of the property that gets exported. Required. Must be unique in the group.
+* value - a String that gets interpreted as a format string (see below) and assembled to form the value. Can contain constant values, #{ } groups and ${ } properties (see below).
+* export - true, false - Whether the value should be exported as a property. (default: true)
+* skip - true, false - Whether the property should be evaluated. False implies also "export = false". (default: true)
 
-* numbers / number
+### numbers / number
 
 A number defines a counter or count.
 
@@ -149,18 +150,18 @@ A number defines a counter or count.
         <onMissingProperty>...</onMissingProperty>
     </number>
 
-** id - the id of the number. Required. Must be unique between numbers, strings, dates and macros.
-** skip - true, false - Whether the counter should be evaluated. Default is false.
-** initialValue - String, containing integers. This is the initial value of the counter. Default is "0".
-** fieldNumber - if the value of the counter contains more than one integer field (i.e. 0.0.0 or 1.2-test8), each field can be incremented separately. The field number select which field to increment (0 based), *COUNTED FROM THE LEFT*. Default is "0", which is the leftmost field.
-                 If the value is "0.0.0" and the fieldNumber is "2", incrementing it by one will yield 0.0.1. If the field number is "0", it will yield 1.0.0.
-** increment - integer, the value that gets added every time the plugin is invoked. Default value is "1".
-** propertyFile - A file to load and store the current state of the counter. Optional, if unset the count is ephemeral.
-** propertyName - The name of the property to load and save the counter. Optional, Default is the id.
-** onMissingFile - ignore, warn, fail, create - If the count should be stored in a file and the file does not exist, create the file. Otherwise, fail the build. Default is fail.
-** onMissingProperty - ignore, warn, fail, create  - If the count should be stored in a file and the file does not contain a property with its id, create the property with its initial value. Otherwise, fail the build. Default is fail.
+* id - the id of the number. Required. Must be unique between numbers, strings, dates and macros.
+* skip - true, false - Whether the counter should be evaluated. Default is false.
+* initialValue - String, containing integers. This is the initial value of the counter. Default is "0".
+* fieldNumber - if the value of the counter contains more than one integer field (i.e. 0.0.0 or 1.2-test8), each field can be incremented separately. The field number select which field to increment (0 based), *COUNTED FROM THE LEFT*. Default is "0", which is the leftmost field.
+                If the value is "0.0.0" and the fieldNumber is "2", incrementing it by one will yield 0.0.1. If the field number is "0", it will yield 1.0.0.
+* increment - integer, the value that gets added every time the plugin is invoked. Default value is "1".
+* propertyFile - A file to load and store the current state of the counter. Optional, if unset the count is ephemeral.
+* propertyName - The name of the property to load and save the counter. Optional, Default is the id.
+* onMissingFile - ignore, warn, fail, create - If the count should be stored in a file and the file does not exist, create the file. Otherwise, fail the build. Default is fail.
+* onMissingProperty - ignore, warn, fail, create  - If the count should be stored in a file and the file does not contain a property with its id, create the property with its initial value. Otherwise, fail the build. Default is fail.
 
-** strings / string
+### strings / string
 
 Defines a text string for further replacement. This can be used to add default values to ${ } properties.
 
@@ -175,13 +176,13 @@ Defines a text string for further replacement. This can be used to add default v
         <onMissingValue>...</onMissingValue>
     </string>
 
-** id - the id of the string. Required. Must be unique between numbers, strings, dates and macros.
-** skip - true, false - Whether the value field should be evaluated. Default is false.
-** values - a list of strings that are used for the value. If a value is not set, the next one is used until a non-blank value is found or the list is exhausted. At least one value is required to be defined.
-** blankIsValid - true / false - whether an empty ('') string is treated as a valid value or whether the next value should be evaluated. Default is true.
-** onMissingValue - warn, fail, ignore - Action when no value was found. If warn or ignore are chosen and no value was found, the string subsequently is not defined which in turn might cause an error in a property definition.
+* id - the id of the string. Required. Must be unique between numbers, strings, dates and macros.
+* skip - true, false - Whether the value field should be evaluated. Default is false.
+* values - a list of strings that are used for the value. If a value is not set, the next one is used until a non-blank value is found or the list is exhausted. At least one value is required to be defined.
+* blankIsValid - true / false - whether an empty ('') string is treated as a valid value or whether the next value should be evaluated. Default is true.
+* onMissingValue - warn, fail, ignore - Action when no value was found. If warn or ignore are chosen and no value was found, the string subsequently is not defined which in turn might cause an error in a property definition.
 
-** dates / date
+### dates / date
 
 Defines a date, time or date/time combination. 
 
@@ -195,13 +196,13 @@ Defines a date, time or date/time combination.
         </date>
     </dates>
 
-** id - the id of the date. Required. Must be unique between numbers, strings, dates and macros.
-** skip - true, false - Whether the date field should be evaluated. Default is false.
-** format - A simpledateformat string for formatting a date. Required.
-** timezone - A valid java timezone name. Optional, defaults to system timezone.
-** value - Number of seconds since the epoch to format. Optional, if missing the current time is used. 
+* id - the id of the date. Required. Must be unique between numbers, strings, dates and macros.
+* skip - true, false - Whether the date field should be evaluated. Default is false.
+* format - A simpledateformat string for formatting a date. Required.
+* timezone - A valid java timezone name. Optional, defaults to system timezone.
+* value - Number of seconds since the epoch to format. Optional, if missing the current time is used. 
 
-** macros / macro
+### macros / macro
 
 Macros extend the functionality of the plugin. 
 
@@ -216,14 +217,14 @@ Macros extend the functionality of the plugin.
         </macro>
     </macros>
 
-** id - the id of the macro. Required. Must be unique between numbers, strings, dates and macros.
-** skip - true, false - Whether the macro should be evaluated. Default is false.
-** macroType - String. Selects a predefined macro which is registered with the plugin. Optional. One of type or class must be given.
-** macroClass - String. A java class to use as a macro. Optional. One of type or class must be given.
-** properties - Set of properties sent to the macro.
-** onMissingValue - warn, fail, ignore - Action when the macro did not return a value. If warn or ignore are chosen and no value was found, the macro result subsequently is not defined which in turn might cause an error in a property definition.
+* id - the id of the macro. Required. Must be unique between numbers, strings, dates and macros.
+* skip - true, false - Whether the macro should be evaluated. Default is false.
+* macroType - String. Selects a predefined macro which is registered with the plugin. Optional. One of type or class must be given.
+* macroClass - String. A java class to use as a macro. Optional. One of type or class must be given.
+* properties - Set of properties sent to the macro.
+* onMissingValue - warn, fail, ignore - Action when the macro did not return a value. If warn or ignore are chosen and no value was found, the macro result subsequently is not defined which in turn might cause an error in a property definition.
 
-** scm macro
+#### scm macro
 
 The scm macro defines values from the underlying SCM.
 
@@ -240,8 +241,10 @@ The scm macro defines values from the underlying SCM.
         </macro>
     </macros>
 
-** type is SCM
-** properties
-*** revision - String with valid SCM name - The name gets sent to the underlying SCM to and the SCM returns a revision string.
+The type is SCM.
+
+Supported  properties:
+
+* revision - String with valid SCM name - The name gets sent to the underlying SCM to and the SCM returns a revision string.
 
 
