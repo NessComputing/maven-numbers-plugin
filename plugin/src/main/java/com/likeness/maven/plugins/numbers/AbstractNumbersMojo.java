@@ -1,10 +1,5 @@
 package com.likeness.maven.plugins.numbers;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -18,6 +13,10 @@ import com.likeness.maven.plugins.numbers.beans.PropertyGroup;
 import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import com.likeness.maven.plugins.numbers.util.Log;
 import com.pyx4j.log4j.MavenLogAppender;
+
+import java.io.File;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Base code for all the mojos.
@@ -56,44 +55,48 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     /**
      * Which groups to activate for this plugin run.
      *
-     * @parameter default-value=""
+     * @parameter
      */
-    protected String activeGroups = "";
+    protected String[] activeGroups;
 
     /**
      * Property groups.
      *
      * @parameter
      */
-    protected List<PropertyGroup> propertyGroups;
+    protected PropertyGroup[] propertyGroups;
 
     /**
      * Numbers.
      *
      * @parameter
+     * @name="numbers"
      */
-    protected List<NumberDefinition> numbers;
+    protected NumberDefinition[] numbers;
 
     /**
      * Strings.
      *
      * @parameter
+     * @name="strings"
      */
-    protected List<StringDefinition> strings;
+    protected StringDefinition[] strings;
 
     /**
      * Dates.
      *
      * @parameter
+     * @name="dates"
      */
-    protected List<DateDefinition> dates;
+    protected DateDefinition[] dates;
 
     /**
      * Macros.
      *
      * @parameter
+     * @name="macros"
      */
-    protected List<MacroDefinition> macros;
+    protected MacroDefinition[] macros;
 
     protected final Log LOG = Log.findLog();
 

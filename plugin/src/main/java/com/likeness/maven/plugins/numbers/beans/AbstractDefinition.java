@@ -1,8 +1,11 @@
 package com.likeness.maven.plugins.numbers.beans;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.google.common.base.Preconditions;
 
 public abstract class AbstractDefinition
 {
@@ -41,6 +44,11 @@ public abstract class AbstractDefinition
     public void setSkip(final boolean skip)
     {
         this.skip = skip;
+    }
+
+    public void check()
+    {
+        Preconditions.checkState(StringUtils.isNotBlank(id), "the id element must not be empty!");
     }
 
     @Override

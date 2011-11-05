@@ -25,7 +25,10 @@ Configuration
 -------------
 
     <configuration>
-        <activeGroups>snapshot,release</activeGroups>
+        <activeGroups>
+            <activeGroup>snapshot</activeGroup>
+            <activeGroup>release</activeGroup>
+        </activeGroups>
         <propertyGroups>
             <propertyGroup>
                 <id>snapshot</id>
@@ -95,7 +98,7 @@ Configuration
 * skip - true, false - When set, skip the execution of the plugin. default is "false".
 * onDuplicateProperty - ignore, warn, fail - When a property is defined multiple times, react accordingly. (default: fail)
 * onMissingProperty - ignore, warn, fail - When a property definition is incomplete (value missing), react accordingly. (default: fail)
-* activeGroups - defines which groups are active. The idea is that most of this configuration can be done in a pluginManagement section and then the <activation> field is used in the actual build profiles to activate various groups. Default: empty (no groups).
+* activeGroups, activeGroup - defines which groups are active. The idea is that most of this configuration can be done in a pluginManagement section and then the <activation> field is used in the actual build profiles to activate various groups. Default: empty (no groups).
 
 ### propertyGroup
 
@@ -234,7 +237,7 @@ The scm macro defines values from the underlying SCM.
             <macroType>scm</macroType>
             <properties>
                 <property>
-                    <name>rev</name>
+                    <name>revision</name>
                     <value>tip</value>
                 </property>
             </properties>

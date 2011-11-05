@@ -2,11 +2,13 @@ package com.likeness.maven.plugins.numbers.beans;
 
 import java.io.File;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 
 public class NumberDefinition extends AbstractDefinition
 {
@@ -26,10 +28,10 @@ public class NumberDefinition extends AbstractDefinition
     private File propertyFile = null;
 
     /** What to do when the property is missing from the file. */
-    private String onMissingFile = "fail";
+    private IWFCEnum onMissingFile = IWFCEnum.FAIL;
 
     /** What to do when the property is missing from the file. */
-    private String onMissingProperty = "fail";
+    private IWFCEnum onMissingProperty = IWFCEnum.FAIL;
 
     @VisibleForTesting
     NumberDefinition(final String id,
@@ -39,8 +41,8 @@ public class NumberDefinition extends AbstractDefinition
                      final int increment,
                      final String propertyName,
                      final File propertyFile,
-                     final String onMissingFile,
-                     final String onMissingProperty)
+                     final IWFCEnum onMissingFile,
+                     final IWFCEnum onMissingProperty)
     {
         super(id, skip);
 
@@ -63,7 +65,7 @@ public class NumberDefinition extends AbstractDefinition
         return initialValue;
     }
 
-    public void setInitialValue(String initialValue)
+    public void setInitialValue(final String initialValue)
     {
         this.initialValue = initialValue;
     }
@@ -73,7 +75,7 @@ public class NumberDefinition extends AbstractDefinition
         return fieldNumber;
     }
 
-    public void setFieldNumber(int fieldNumber)
+    public void setFieldNumber(final int fieldNumber)
     {
         this.fieldNumber = fieldNumber;
     }
@@ -83,17 +85,17 @@ public class NumberDefinition extends AbstractDefinition
         return increment;
     }
 
-    public void setIncrement(int increment)
+    public void setIncrement(final int increment)
     {
         this.increment = increment;
     }
 
     public String getPropertyName()
     {
-        return propertyName;
+        return StringUtils.isNotBlank(propertyName) ? propertyName : getId();
     }
 
-    public void setPropertyName(String propertyName)
+    public void setPropertyName(final String propertyName)
     {
         this.propertyName = propertyName;
     }
@@ -103,29 +105,38 @@ public class NumberDefinition extends AbstractDefinition
         return propertyFile;
     }
 
-    public void setPropertyFile(File propertyFile)
+    public void setPropertyFile(final File propertyFile)
     {
         this.propertyFile = propertyFile;
     }
 
-    public String getOnMissingFile()
+    public IWFCEnum getOnMissingFile()
     {
         return onMissingFile;
     }
 
-    public void setOnMissingFile(String onMissingFile)
+    public void setOnMissingFile(final String onMissingFile)
     {
-        this.onMissingFile = onMissingFile;
+        this.onMissingFile = IWFCEnum.forString(onMissingFile);
     }
 
-    public String getOnMissingProperty()
+    public IWFCEnum getOnMissingProperty()
     {
         return onMissingProperty;
     }
 
-    public void setOnMissingProperty(String onMissingProperty)
+    public void setOnMissingProperty(final String onMissingProperty)
     {
-        this.onMissingProperty = onMissingProperty;
+        this.onMissingProperty = IWFCEnum.forString(onMissingProperty);
+    }
+
+    @Override
+    public void check()
+    {
+        super.check();
+
+        Preconditions.checkState(StringUtils.isNotBlank(initialValue), "the initial value must not be empty");
+        Preconditions.checkState(fieldNumber >= 0, "the field number must be >= 0");
     }
 
     @Override
