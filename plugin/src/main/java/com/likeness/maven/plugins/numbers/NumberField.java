@@ -1,16 +1,15 @@
 package com.likeness.maven.plugins.numbers;
 
-import static java.lang.String.format;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
+import org.apache.commons.lang3.StringUtils;
+
+import static java.lang.String.format;
 
 public class NumberField implements PropertyElement
 {
@@ -19,29 +18,24 @@ public class NumberField implements PropertyElement
     private final NumberDefinition numberDefinition;
 
     private final List<String> elements = Lists.newArrayList();
-    private final List<Pair<Integer, Long>> numberElements;
+    private final List<Integer> numberElements = Lists.newArrayList();
 
     public NumberField(final NumberDefinition numberDefinition, final String value)
     {
         this.numberDefinition = numberDefinition;
 
         if (value != null) {
-            numberElements = Lists.newArrayList();
             final Matcher m = MATCH_GROUPS.matcher(value);
 
             while (m.find()) {
                 final String matchValue = m.group();
                 elements.add(matchValue);
                 if (isNumber(matchValue)) {
-                    final Pair<Integer,Long> numberValue = Pair.of(elements.size() - 1, Long.parseLong(value));
-                    numberElements.add(numberValue);
+                    numberElements.add(elements.size() - 1);
                 }
             }
 
             Preconditions.checkState(numberElements.size() > numberDefinition.getFieldNumber(), format("Only %d fields in %s, field %d requested.", numberElements.size(), value, numberDefinition.getFieldNumber()));
-        }
-        else {
-            numberElements = null;
         }
     }
 
@@ -56,7 +50,8 @@ public class NumberField implements PropertyElement
 
     public Long getNumberValue()
     {
-        return numberElements == null ? null : numberElements.get(numberDefinition.getFieldNumber()).getValue();
+        String fieldValue = getPropertyValue();
+        return fieldValue == null ? null : new Long(fieldValue);
     }
 
     @Override
@@ -68,6 +63,12 @@ public class NumberField implements PropertyElement
     @Override
     public String getPropertyValue()
     {
-        return numberElements == null ? null : numberElements.get(numberDefinition.getFieldNumber()).getValue().toString();
+        return numberElements.isEmpty() ? null : elements.get(numberElements.get(numberDefinition.getFieldNumber()));
+    }
+
+    @Override
+    public String toString()
+    {
+        return StringUtils.join(elements, null);
     }
 }

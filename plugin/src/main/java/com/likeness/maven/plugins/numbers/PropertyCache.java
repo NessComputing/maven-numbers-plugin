@@ -37,8 +37,7 @@ public class PropertyCache
         return findCurrentValue(props, numberDefinition);
     }
 
-    @VisibleForTesting
-    String findCurrentValue(final Properties props, final NumberDefinition numberDefinition)
+    private String findCurrentValue(final Properties props, final NumberDefinition numberDefinition)
     {
         final String propName = numberDefinition.getPropertyName();
         final boolean hasProperty = props.containsKey(propName);
