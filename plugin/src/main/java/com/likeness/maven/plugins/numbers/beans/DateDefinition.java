@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class DateDefinition extends AbstractDefinition
+public class DateDefinition extends AbstractDefinition<DateDefinition>
 {
     /** Format for this date. */
     private String format = null;
@@ -41,9 +41,10 @@ public class DateDefinition extends AbstractDefinition
         return format;
     }
 
-    public void setFormat(String format)
+    public DateDefinition setFormat(String format)
     {
         this.format = format;
+        return this;
     }
 
     public String getTimezone()
@@ -51,9 +52,10 @@ public class DateDefinition extends AbstractDefinition
         return timezone;
     }
 
-    public void setTimezone(String timezone)
+    public DateDefinition setTimezone(String timezone)
     {
         this.timezone = timezone;
+        return this;
     }
 
     public long getValue()
@@ -61,9 +63,10 @@ public class DateDefinition extends AbstractDefinition
         return value;
     }
 
-    public void setValue(long value)
+    public DateDefinition setValue(long value)
     {
         this.value = value;
+        return this;
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.base.Preconditions;
 
-public abstract class AbstractDefinition
+public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
 {
     /** Name of the build property to define. */
     private String id;
@@ -31,9 +31,10 @@ public abstract class AbstractDefinition
         return id;
     }
 
-    public void setId(final String id)
+    public T setId(final String id)
     {
         this.id = id;
+        return (T) this;
     }
 
     public boolean isSkip()
@@ -41,9 +42,10 @@ public abstract class AbstractDefinition
         return skip;
     }
 
-    public void setSkip(final boolean skip)
+    public T setSkip(final boolean skip)
     {
         this.skip = skip;
+        return (T) this;
     }
 
     public void check()

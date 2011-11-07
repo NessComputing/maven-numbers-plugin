@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 
-public class NumberDefinition extends AbstractDefinition
+public class NumberDefinition extends AbstractDefinition<NumberDefinition>
 {
     /** The initial value for this field. */
     private String initialValue = "0";
@@ -65,9 +65,10 @@ public class NumberDefinition extends AbstractDefinition
         return initialValue;
     }
 
-    public void setInitialValue(final String initialValue)
+    public NumberDefinition setInitialValue(final String initialValue)
     {
         this.initialValue = initialValue;
+        return this;
     }
 
     public int getFieldNumber()
@@ -75,9 +76,10 @@ public class NumberDefinition extends AbstractDefinition
         return fieldNumber;
     }
 
-    public void setFieldNumber(final int fieldNumber)
+    public NumberDefinition setFieldNumber(final int fieldNumber)
     {
-        this.fieldNumber = fieldNumber;
+        this.fieldNumber = fieldNumber; 
+        return this;
     }
 
     public int getIncrement()
@@ -85,9 +87,10 @@ public class NumberDefinition extends AbstractDefinition
         return increment;
     }
 
-    public void setIncrement(final int increment)
+    public NumberDefinition setIncrement(final int increment)
     {
         this.increment = increment;
+        return this;
     }
 
     public String getPropertyName()
@@ -95,9 +98,10 @@ public class NumberDefinition extends AbstractDefinition
         return StringUtils.isNotBlank(propertyName) ? propertyName : getId();
     }
 
-    public void setPropertyName(final String propertyName)
+    public NumberDefinition setPropertyName(final String propertyName)
     {
         this.propertyName = propertyName;
+        return this;
     }
 
     public File getPropertyFile()
@@ -105,9 +109,10 @@ public class NumberDefinition extends AbstractDefinition
         return propertyFile;
     }
 
-    public void setPropertyFile(final File propertyFile)
+    public NumberDefinition setPropertyFile(final File propertyFile)
     {
         this.propertyFile = propertyFile;
+        return this;
     }
 
     public IWFCEnum getOnMissingFile()
@@ -115,9 +120,10 @@ public class NumberDefinition extends AbstractDefinition
         return onMissingFile;
     }
 
-    public void setOnMissingFile(final String onMissingFile)
+    public NumberDefinition setOnMissingFile(final String onMissingFile)
     {
         this.onMissingFile = IWFCEnum.forString(onMissingFile);
+        return this;
     }
 
     public IWFCEnum getOnMissingProperty()
@@ -125,9 +131,10 @@ public class NumberDefinition extends AbstractDefinition
         return onMissingProperty;
     }
 
-    public void setOnMissingProperty(final String onMissingProperty)
+    public NumberDefinition setOnMissingProperty(final String onMissingProperty)
     {
         this.onMissingProperty = IWFCEnum.forString(onMissingProperty);
+        return this;
     }
 
     @Override

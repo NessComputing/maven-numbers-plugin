@@ -8,7 +8,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class StringDefinition extends AbstractDefinition
+import javax.print.DocFlavor;
+
+public class StringDefinition extends AbstractDefinition<StringDefinition>
 {
     /** Values for this string. */
     private List<String> values;
@@ -43,9 +45,10 @@ public class StringDefinition extends AbstractDefinition
         return values;
     }
 
-    public void setValues(List<String> values)
+    public StringDefinition setValues(List<String> values)
     {
         this.values = values;
+        return this;
     }
 
     public boolean isBlankIsValid()
@@ -53,9 +56,10 @@ public class StringDefinition extends AbstractDefinition
         return blankIsValid;
     }
 
-    public void setBlankIsValid(boolean blankIsValid)
+    public StringDefinition setBlankIsValid(boolean blankIsValid)
     {
         this.blankIsValid = blankIsValid;
+        return this;
     }
 
     public String getOnMissingValue()
@@ -63,9 +67,10 @@ public class StringDefinition extends AbstractDefinition
         return onMissingValue;
     }
 
-    public void setOnMissingValue(String onMissingValue)
+    public StringDefinition setOnMissingValue(String onMissingValue)
     {
         this.onMissingValue = onMissingValue;
+        return this;
     }
 
     @Override

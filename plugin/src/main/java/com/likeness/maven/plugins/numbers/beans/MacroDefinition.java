@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class MacroDefinition extends AbstractDefinition
+public class MacroDefinition extends AbstractDefinition<MacroDefinition>
 {
     /** Macro type. */
     private String macroType = null;
@@ -43,9 +43,10 @@ public class MacroDefinition extends AbstractDefinition
         return macroType;
     }
 
-    public void setMacroType(String macroType)
+    public MacroDefinition setMacroType(String macroType)
     {
         this.macroType = macroType;
+        return this;
     }
 
     public String getMacroClass()
@@ -53,9 +54,10 @@ public class MacroDefinition extends AbstractDefinition
         return macroClass;
     }
 
-    public void setMacroClass(String macroClass)
+    public MacroDefinition setMacroClass(String macroClass)
     {
         this.macroClass = macroClass;
+        return this;
     }
 
     public Properties getProperties()
@@ -63,9 +65,10 @@ public class MacroDefinition extends AbstractDefinition
         return properties;
     }
 
-    public void setProperties(Properties properties)
+    public MacroDefinition setProperties(Properties properties)
     {
         this.properties = properties;
+        return this;
     }
 
     @Override
