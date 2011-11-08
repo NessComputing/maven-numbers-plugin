@@ -151,6 +151,7 @@ A number defines a counter or count.
         <propertyName>...</propertyName>
         <onMissingFile>...</onMissingFile>
         <onMissingProperty>...</onMissingProperty>
+        <export>...</export>
     </number>
 
 * id - the id of the number. Required. Must be unique between numbers, strings, dates and macros.
@@ -158,11 +159,13 @@ A number defines a counter or count.
 * initialValue - String, containing integers. This is the initial value of the counter. Default is "0".
 * fieldNumber - if the value of the counter contains more than one integer field (i.e. 0.0.0 or 1.2-test8), each field can be incremented separately. The field number select which field to increment (0 based), *COUNTED FROM THE LEFT*. Default is "0", which is the leftmost field.
                 If the value is "0.0.0" and the fieldNumber is "2", incrementing it by one will yield 0.0.1. If the field number is "0", it will yield 1.0.0.
+                This field does not influence the final value of the number (which is based on the property field and/or initial value).
 * increment - integer, the value that gets added every time the plugin is invoked. Default value is "1".
 * propertyFile - A file to load and store the current state of the counter. Optional, if unset the count is ephemeral.
 * propertyName - The name of the property to load and save the counter. Optional, Default is the id.
 * onMissingFile - ignore, warn, fail, create - If the count should be stored in a file and the file does not exist, create the file. Otherwise, fail the build. Default is fail.
 * onMissingProperty - ignore, warn, fail, create  - If the count should be stored in a file and the file does not contain a property with its id, create the property with its initial value. Otherwise, fail the build. Default is fail.
+* export - export this number directly as a property.
 
 ### strings / string
 

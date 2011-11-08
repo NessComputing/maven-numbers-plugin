@@ -29,7 +29,13 @@ public class GetNumbersMojo extends AbstractNumbersMojo
         propertyElements.addAll(numberFields);
 
         for (PropertyElement pe : propertyElements) {
-            LOG.info("Property name: %s, value: %s", pe.getPropertyName(), pe.getPropertyValue());
+            if (pe.isExport()) {
+                project.getProperties().setProperty(pe.getPropertyName(), pe.getPropertyValue());
+                LOG.info("Exporting Property name: %s, value: %s", pe.getPropertyName(), pe.getPropertyValue());
+            }
+            else {
+                LOG.info("Property name: %s, value: %s", pe.getPropertyName(), pe.getPropertyValue());
+            }
         }
     }
 

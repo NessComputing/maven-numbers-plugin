@@ -31,14 +31,22 @@ public class NumberField implements PropertyElement
     @Override
     public String getPropertyName()
     {
-        return numberDefinition.getPropertyName();
+        // This is not the property name (because many definitions can map onto one prop) 
+        // but the actual id.
+        return numberDefinition.getId();
     }
 
     @Override
     public String getPropertyValue()
     {
         parse();
-        return numberElements.isEmpty() ? null : elements.get(numberElements.get(numberDefinition.getFieldNumber()));
+        return StringUtils.join(elements, null);
+    }
+
+    @Override
+    public boolean isExport()
+    {
+        return numberDefinition.isExport();
     }
 
     private void parse()
@@ -88,14 +96,13 @@ public class NumberField implements PropertyElement
 
     public Long getNumberValue()
     {
-        String fieldValue = getPropertyValue();
-        return fieldValue == null ? null : new Long(fieldValue);
+        parse();
+        return numberElements.isEmpty() ? null : new Long(elements.get(numberElements.get(numberDefinition.getFieldNumber())));
     }
 
     @Override
     public String toString()
     {
-        parse();
-        return StringUtils.join(elements, null);
+        return getPropertyValue();
     }
 }

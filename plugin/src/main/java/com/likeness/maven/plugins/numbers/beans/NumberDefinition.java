@@ -33,6 +33,9 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
     /** What to do when the property is missing from the file. */
     private IWFCEnum onMissingProperty = IWFCEnum.FAIL;
 
+    /** Whether to export this number directly. */
+    private boolean export = false;
+
     @VisibleForTesting
     NumberDefinition(final String id,
                      final boolean skip,
@@ -42,7 +45,8 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
                      final String propertyName,
                      final File propertyFile,
                      final IWFCEnum onMissingFile,
-                     final IWFCEnum onMissingProperty)
+                     final IWFCEnum onMissingProperty,
+                     final boolean export)
     {
         super(id, skip);
 
@@ -53,6 +57,7 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
         this.propertyFile = propertyFile;
         this.onMissingFile = onMissingFile;
         this.onMissingProperty = onMissingProperty;
+        this.export = export;
     }
 
     public NumberDefinition()
@@ -137,6 +142,16 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
         return this;
     }
 
+    public void setExport(final boolean export)
+    {
+        this.export = export;
+    }
+
+    public boolean isExport()
+    {
+        return export;
+    }
+
     @Override
     public void check()
     {
@@ -144,41 +159,5 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
 
         Preconditions.checkState(StringUtils.isNotBlank(initialValue), "the initial value must not be empty");
         Preconditions.checkState(fieldNumber >= 0, "the field number must be >= 0");
-    }
-
-    @Override
-    public boolean equals(final Object other)
-    {
-        if (!(other instanceof NumberDefinition))
-            return false;
-        NumberDefinition castOther = (NumberDefinition) other;
-        return new EqualsBuilder().append(initialValue, castOther.initialValue)
-            .append(fieldNumber, castOther.fieldNumber)
-            .append(increment, castOther.increment)
-            .append(propertyName, castOther.propertyName)
-            .append(propertyFile, castOther.propertyFile)
-            .append(onMissingFile, castOther.onMissingFile)
-            .append(onMissingProperty, castOther.onMissingProperty)
-            .isEquals();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return new HashCodeBuilder().append(initialValue).append(fieldNumber).append(increment).append(propertyName).append(propertyFile).append(onMissingFile).append(onMissingProperty).toHashCode();
-    }
-
-    @Override
-    public String toString()
-    {
-        return new ToStringBuilder(this).appendSuper(super.toString())
-            .append("initialValue", initialValue)
-            .append("fieldNumber", fieldNumber)
-            .append("increment", increment)
-            .append("propertyName", propertyName)
-            .append("propertyFile", propertyFile)
-            .append("onMissingFile", onMissingFile)
-            .append("onMissingProperty", onMissingProperty)
-            .toString();
     }
 }

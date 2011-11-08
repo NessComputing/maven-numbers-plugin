@@ -50,9 +50,9 @@ public class TestNumberField
         Assert.assertEquals(8L, nf2.getNumberValue().longValue());
         Assert.assertEquals(15L, nf3.getNumberValue().longValue());
 
-        Assert.assertEquals(value, nf1.toString());
-        Assert.assertEquals(value, nf2.toString());
-        Assert.assertEquals(value, nf3.toString());
+        Assert.assertEquals(value, nf1.getPropertyValue());
+        Assert.assertEquals(value, nf2.getPropertyValue());
+        Assert.assertEquals(value, nf3.getPropertyValue());
     }
 
     @Test
@@ -90,10 +90,10 @@ public class TestNumberField
         Assert.assertEquals(1L, nf3.getNumberValue().longValue());
         Assert.assertEquals(4L, nf4.getNumberValue().longValue());
 
-        Assert.assertEquals(value, nf1.toString());
-        Assert.assertEquals(value, nf2.toString());
-        Assert.assertEquals(value, nf3.toString());
-        Assert.assertEquals(value, nf4.toString());
+        Assert.assertEquals(value, nf1.getPropertyValue());
+        Assert.assertEquals(value, nf2.getPropertyValue());
+        Assert.assertEquals(value, nf3.getPropertyValue());
+        Assert.assertEquals(value, nf4.getPropertyValue());
     }
 
     @Test
@@ -111,12 +111,12 @@ public class TestNumberField
         final NumberField nf1 = new NumberField(f1, new ValueProvider.PropertyProvider(props, f1.getPropertyName()));
 
         Assert.assertEquals(1L, nf1.getNumberValue().longValue());
-        Assert.assertEquals(value, nf1.toString());
+        Assert.assertEquals(value, nf1.getPropertyValue());
 
         nf1.increment();
 
         Assert.assertEquals(2L, nf1.getNumberValue().longValue());
-        Assert.assertEquals("foobar-2.2-barfoo-3", nf1.toString());
+        Assert.assertEquals("foobar-2.2-barfoo-3", nf1.getPropertyValue());
     }
 
     @Test
@@ -141,20 +141,20 @@ public class TestNumberField
 
         Assert.assertEquals(4L, nf1.getNumberValue().longValue());
         Assert.assertEquals(8L, nf2.getNumberValue().longValue());
-        Assert.assertEquals(value, nf1.toString());
-        Assert.assertEquals(value, nf2.toString());
+        Assert.assertEquals(value, nf1.getPropertyValue());
+        Assert.assertEquals(value, nf2.getPropertyValue());
 
         nf1.increment();
         Assert.assertEquals(5L, nf1.getNumberValue().longValue());
         Assert.assertEquals(8L, nf2.getNumberValue().longValue());
-        Assert.assertEquals("5.8", nf1.toString());
-        Assert.assertEquals("5.8", nf2.toString());
+        Assert.assertEquals("5.8", nf1.getPropertyValue());
+        Assert.assertEquals("5.8", nf2.getPropertyValue());
 
         nf2.increment();
         Assert.assertEquals(5L, nf1.getNumberValue().longValue());
         Assert.assertEquals(9L, nf2.getNumberValue().longValue());
-        Assert.assertEquals("5.9", nf1.toString());
-        Assert.assertEquals("5.9", nf2.toString());
+        Assert.assertEquals("5.9", nf1.getPropertyValue());
+        Assert.assertEquals("5.9", nf2.getPropertyValue());
     }
 
     @Test
@@ -179,20 +179,20 @@ public class TestNumberField
 
         Assert.assertEquals(4L, nf1.getNumberValue().longValue());
         Assert.assertEquals(4L, nf2.getNumberValue().longValue());
-        Assert.assertEquals(value, nf1.toString());
-        Assert.assertEquals(value, nf2.toString());
+        Assert.assertEquals(value, nf1.getPropertyValue());
+        Assert.assertEquals(value, nf2.getPropertyValue());
 
         nf1.increment();
         Assert.assertEquals(5L, nf1.getNumberValue().longValue());
         Assert.assertEquals(5L, nf2.getNumberValue().longValue());
-        Assert.assertEquals("5.8", nf1.toString());
-        Assert.assertEquals("5.8", nf2.toString());
+        Assert.assertEquals("5.8", nf1.getPropertyValue());
+        Assert.assertEquals("5.8", nf2.getPropertyValue());
 
         nf2.increment();
         Assert.assertEquals(6L, nf1.getNumberValue().longValue());
         Assert.assertEquals(6L, nf2.getNumberValue().longValue());
-        Assert.assertEquals("6.8", nf1.toString());
-        Assert.assertEquals("6.8", nf2.toString());
+        Assert.assertEquals("6.8", nf1.getPropertyValue());
+        Assert.assertEquals("6.8", nf2.getPropertyValue());
     }
 }
     

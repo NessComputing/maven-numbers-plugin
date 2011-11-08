@@ -8,7 +8,7 @@ public class TestNumberDefinition
     @Test
     public void testValid()
     {
-        final NumberDefinition nd = new NumberDefinition("hello", false, "1", 0, 1, null, null, IWFCEnum.FAIL, IWFCEnum.FAIL);
+        final NumberDefinition nd = new NumberDefinition("hello", false, "1", 0, 1, null, null, IWFCEnum.FAIL, IWFCEnum.FAIL, true);
         nd.check();
     }
 
@@ -31,6 +31,7 @@ public class TestNumberDefinition
         Assert.assertNull(nd.getPropertyFile());
         Assert.assertEquals(IWFCEnum.FAIL, nd.getOnMissingFile());
         Assert.assertEquals(IWFCEnum.FAIL, nd.getOnMissingProperty());
+        Assert.assertFalse(nd.isExport());
     }
 
     @Test

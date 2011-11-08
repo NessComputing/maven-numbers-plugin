@@ -5,4 +5,6 @@ public interface PropertyElement
     String getPropertyName();
 
     String getPropertyValue();
+
+    boolean isExport();
 }
