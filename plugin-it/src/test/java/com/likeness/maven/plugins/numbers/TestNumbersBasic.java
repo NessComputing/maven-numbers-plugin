@@ -1,18 +1,12 @@
 package com.likeness.maven.plugins.numbers;
 
 import java.io.File;
-import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import org.apache.maven.it.Verifier;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.google.common.collect.ImmutableList;
-
-import static java.lang.String.format;
 
 /**
  * Tests basic functionality of the Number get mojo. This uses the pom.xml file in src/test/resources/basic-get and a lot of the
@@ -24,7 +18,7 @@ public class TestNumbersBasic
     @Test
     public void testNumber1() throws Exception
     {
-        final File jarLocation = loadPom("basic", "number1");
+        final File jarLocation = TestUtils.runPackageGoal("basic", "number1");
 
         final JarFile jarFile = new JarFile(jarLocation);
         final Manifest manifest = jarFile.getManifest();
@@ -49,7 +43,7 @@ public class TestNumbersBasic
     @Test
     public void testNumber2() throws Exception
     {
-        final File jarLocation = loadPom("missing", "number2");
+        final File jarLocation = TestUtils.runPackageGoal("missing", "number2");
 
         final JarFile jarFile = new JarFile(jarLocation);
         final Manifest manifest = jarFile.getManifest();
@@ -65,22 +59,17 @@ public class TestNumbersBasic
         Assert.assertEquals("", missing);
     }
 
-    private File loadPom(final String pomName, final String testName)
-        throws Exception
+    @Test
+    public void testNumber3() throws Exception
     {
-        final String location = TestUtils.getLocation(pomName);
-        final Verifier verifier = new Verifier(location);
-        verifier.getEnvironmentVariables().setProperty("testName", testName);
-        final List<String> goals = ImmutableList.of("package");
-        verifier.addCliOption("-X");
-        verifier.executeGoals(goals);
+        final File jarLocation = TestUtils.runPackageGoal("props", "number3");
 
-        verifier.verifyErrorFreeLog();
-        verifier.resetStreams();
+        final JarFile jarFile = new JarFile(jarLocation);
+        final Manifest manifest = jarFile.getManifest();
+        final Attributes attributes = manifest.getMainAttributes();
 
-        final File jarLocation = TestUtils.getTargetArtifact(pomName, testName, "jar");
-        Assert.assertTrue(format("'%s' does not exist!", jarLocation.getAbsolutePath()), jarLocation.exists());
-        Assert.assertTrue(format("'%s' is not a file!", jarLocation.getAbsolutePath()), jarLocation.isFile());
-        return jarLocation;
+        final String version = attributes.getValue("my-version");
+        Assert.assertNotNull(version);
+        Assert.assertEquals("2.8.0", version);
     }
 }
