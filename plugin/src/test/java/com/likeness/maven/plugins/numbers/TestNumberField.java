@@ -156,5 +156,43 @@ public class TestNumberField
         Assert.assertEquals("5.9", nf1.toString());
         Assert.assertEquals("5.9", nf2.toString());
     }
+
+    @Test
+    public void testDoubleIncrement()
+    {
+        final NumberDefinition f1 = new NumberDefinition()
+            .setId("hello")
+            .setFieldNumber(0);
+        final NumberDefinition f2 = new NumberDefinition()
+            .setId("hello")
+            .setFieldNumber(0);
+        f1.check();
+        f2.check();
+
+        final String value = "4.8";
+
+        final Properties props = new Properties();
+        props.setProperty("hello", value);
+
+        final NumberField nf1 = new NumberField(f1, new ValueProvider.PropertyProvider(props, f1.getPropertyName()));
+        final NumberField nf2 = new NumberField(f2, new ValueProvider.PropertyProvider(props, f2.getPropertyName()));
+
+        Assert.assertEquals(4L, nf1.getNumberValue().longValue());
+        Assert.assertEquals(4L, nf2.getNumberValue().longValue());
+        Assert.assertEquals(value, nf1.toString());
+        Assert.assertEquals(value, nf2.toString());
+
+        nf1.increment();
+        Assert.assertEquals(5L, nf1.getNumberValue().longValue());
+        Assert.assertEquals(5L, nf2.getNumberValue().longValue());
+        Assert.assertEquals("5.8", nf1.toString());
+        Assert.assertEquals("5.8", nf2.toString());
+
+        nf2.increment();
+        Assert.assertEquals(6L, nf1.getNumberValue().longValue());
+        Assert.assertEquals(6L, nf2.getNumberValue().longValue());
+        Assert.assertEquals("6.8", nf1.toString());
+        Assert.assertEquals("6.8", nf2.toString());
+    }
 }
     

@@ -35,14 +35,14 @@ public enum IWFCEnum
             return false;
         }
         else if (iwfc == WARN) {
-            LOG.warn("%s does not exist!", thing);
+            LOG.warn("'%s' does not exist!", thing);
             return false;
         }
         else if (iwfc == FAIL) {
-            throw new IllegalStateException(format("%s does not exist!", thing));
+            throw new IllegalStateException(format("'%s' does not exist!", thing));
         }
         else if (iwfc == CREATE) {
-            LOG.debug("%s does not exist, suggesting creation.", thing);
+            LOG.debug("'%s' does not exist, suggesting creation.", thing);
             return true;
         }
         else {
