@@ -19,16 +19,17 @@ public class StringDefinition extends AbstractDefinition<StringDefinition>
     private boolean blankIsValid = true;
 
     /** Default action on missing value. */
-    private String onMissingValue = "fail";
+    private IWFEnum onMissingValue = IWFEnum.FAIL;
 
     @VisibleForTesting
     StringDefinition(final String id,
                      final boolean skip,
+                     final boolean export,
                      final List<String> values,
                      final boolean blankIsValid,
-                     final String onMissingValue)
+                     final IWFEnum onMissingValue)
     {
-        super(id, skip);
+        super(id, skip, export);
 
         this.values = values;
         this.blankIsValid = blankIsValid;
@@ -45,7 +46,7 @@ public class StringDefinition extends AbstractDefinition<StringDefinition>
         return values;
     }
 
-    public StringDefinition setValues(List<String> values)
+    public StringDefinition setValues(final List<String> values)
     {
         this.values = values;
         return this;
@@ -56,43 +57,20 @@ public class StringDefinition extends AbstractDefinition<StringDefinition>
         return blankIsValid;
     }
 
-    public StringDefinition setBlankIsValid(boolean blankIsValid)
+    public StringDefinition setBlankIsValid(final boolean blankIsValid)
     {
         this.blankIsValid = blankIsValid;
         return this;
     }
 
-    public String getOnMissingValue()
+    public IWFEnum getOnMissingValue()
     {
         return onMissingValue;
     }
 
-    public StringDefinition setOnMissingValue(String onMissingValue)
+    public StringDefinition setOnMissingValue(final String onMissingValue)
     {
-        this.onMissingValue = onMissingValue;
+        this.onMissingValue = IWFEnum.forString(onMissingValue);
         return this;
     }
-
-    @Override
-    public boolean equals(final Object other)
-    {
-        if (!(other instanceof StringDefinition))
-            return false;
-        StringDefinition castOther = (StringDefinition) other;
-        return new EqualsBuilder().appendSuper(super.equals(other)).append(values, castOther.values).append(blankIsValid, castOther.blankIsValid).append(onMissingValue, castOther.onMissingValue).isEquals();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return new HashCodeBuilder().appendSuper(super.hashCode()).append(values).append(blankIsValid).append(onMissingValue).toHashCode();
-    }
-
-    @Override
-    public String toString()
-    {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("values", values).append("blankIsValid", blankIsValid).append("onMissingValue", onMissingValue).toString();
-    }
-
-
 }

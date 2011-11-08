@@ -22,11 +22,12 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
     @VisibleForTesting
     MacroDefinition(final String id,
                     final boolean skip,
+                    final boolean export,
                     final String macroType,
                     final String macroClass,
                     final Properties properties)
     {
-        super(id, skip);
+        super(id, skip, export);
 
         this.macroType = macroType;
         this.macroClass = macroClass;

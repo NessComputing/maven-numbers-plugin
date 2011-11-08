@@ -15,11 +15,16 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
     /** True skips the parsing of this definition. */
     private boolean skip = false;
 
+    /** Whether to export this number directly. */
+    private boolean export = false;
+
     protected AbstractDefinition(final String id,
-                                 final boolean skip)
+                                 final boolean skip,
+                                 final boolean export)
     {
         this.id = id;
         this.skip = skip;
+        this.export = export;
     }
 
     public AbstractDefinition()
@@ -48,29 +53,19 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return (T) this;
     }
 
+    public boolean isExport()
+    {
+        return export;
+    }
+
+    public T setExport(final boolean export)
+    {
+        this.export = export;
+        return (T) this;
+    }
+
     public void check()
     {
         Preconditions.checkState(StringUtils.isNotBlank(id), "the id element must not be empty!");
-    }
-
-    @Override
-    public boolean equals(final Object other)
-    {
-        if (!(other instanceof AbstractDefinition))
-            return false;
-        AbstractDefinition castOther = (AbstractDefinition) other;
-        return new EqualsBuilder().append(id, castOther.id).append(skip, castOther.skip).isEquals();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return new HashCodeBuilder().append(id).append(skip).toHashCode();
-    }
-
-    @Override
-    public String toString()
-    {
-        return new ToStringBuilder(this).append("id", id).append("skip", skip).toString();
     }
 }

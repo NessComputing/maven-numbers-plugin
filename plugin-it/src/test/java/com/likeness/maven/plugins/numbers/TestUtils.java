@@ -1,13 +1,13 @@
 package com.likeness.maven.plugins.numbers;
 
-import static java.lang.String.format;
-
 import java.io.File;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.maven.it.Verifier;
 import org.junit.Assert;
+
+import static java.lang.String.format;
 
 public final class TestUtils
 {

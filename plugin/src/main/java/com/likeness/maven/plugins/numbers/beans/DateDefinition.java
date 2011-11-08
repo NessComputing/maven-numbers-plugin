@@ -20,11 +20,12 @@ public class DateDefinition extends AbstractDefinition<DateDefinition>
     @VisibleForTesting
     DateDefinition(final String id,
                    final boolean skip,
+                   final boolean export,
                    final String format,
                    final String timezone,
                    final long value)
     {
-        super(id, skip);
+        super(id, skip, export);
 
         this.format = format;
         this.timezone = timezone;

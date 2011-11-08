@@ -33,22 +33,19 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
     /** What to do when the property is missing from the file. */
     private IWFCEnum onMissingProperty = IWFCEnum.FAIL;
 
-    /** Whether to export this number directly. */
-    private boolean export = false;
-
     @VisibleForTesting
     NumberDefinition(final String id,
                      final boolean skip,
+                     final boolean export,
                      final String initialValue,
                      final int fieldNumber,
                      final int increment,
                      final String propertyName,
                      final File propertyFile,
                      final IWFCEnum onMissingFile,
-                     final IWFCEnum onMissingProperty,
-                     final boolean export)
+                     final IWFCEnum onMissingProperty)
     {
-        super(id, skip);
+        super(id, skip, export);
 
         this.initialValue = initialValue;
         this.fieldNumber = fieldNumber;
@@ -57,7 +54,6 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
         this.propertyFile = propertyFile;
         this.onMissingFile = onMissingFile;
         this.onMissingProperty = onMissingProperty;
-        this.export = export;
     }
 
     public NumberDefinition()
@@ -140,16 +136,6 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
     {
         this.onMissingProperty = IWFCEnum.forString(onMissingProperty);
         return this;
-    }
-
-    public void setExport(final boolean export)
-    {
-        this.export = export;
-    }
-
-    public boolean isExport()
-    {
-        return export;
     }
 
     @Override
