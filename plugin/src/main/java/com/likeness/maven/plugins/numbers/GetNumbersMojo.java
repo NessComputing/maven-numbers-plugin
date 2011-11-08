@@ -3,6 +3,7 @@ package com.likeness.maven.plugins.numbers;
 import java.io.IOException;
 import java.util.List;
 
+import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.collect.Lists;
@@ -50,6 +51,22 @@ public class GetNumbersMojo extends AbstractNumbersMojo
                 final ValueProvider numberValue = propertyCache.getPropertyValue(numberDefinition);
                 final NumberField numberField = new NumberField(numberDefinition, numberValue);
                 result.add(numberField);
+            }
+        }
+        return result;
+    }
+
+    private List<StringField> createStrings(final StringDefinition[] stringDefinitions)
+        throws IOException
+    {
+        final List<StringField> result = Lists.newArrayList();
+
+        if (!ArrayUtils.isEmpty(stringDefinitions)) {
+            for (StringDefinition stringDefinition : stringDefinitions) {
+                stringDefinition.check();
+                // final ValueProvider stringValue = propertyCache.getPropertyValue(stringDefinition);
+                // final StringField stringField = new StringField(stringDefinition, stringValue);
+                // result.add(stringField);
             }
         }
         return result;
