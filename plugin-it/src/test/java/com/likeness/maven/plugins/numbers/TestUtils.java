@@ -19,9 +19,9 @@ public final class TestUtils
         return new File(format("target/test-classes/%s", testName)).getAbsolutePath();
     }
 
-    public static File getTargetArtifact(final String testName, final String type)
+    public static File getTargetArtifact(final String pomName, final String testName, final String type)
     {
-        final String location = getLocation(testName);
+        final String location = getLocation(pomName);
 
         return new File(format("%s/target/%s-%s-%s.%s", location, ARTIFACT, testName, VERSION, type));
     }
