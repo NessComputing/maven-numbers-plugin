@@ -27,33 +27,39 @@ public class PropertyCache
     /** Cache for properties files loaded from disk */
     private Map<File, PropertyCacheEntry> propFiles = Maps.newHashMap();
 
-    public String getPropertyValue(final NumberDefinition numberDefinition)
+    private final Properties ephemeralProperties = new Properties();
+
+    public ValueProvider getPropertyValue(final NumberDefinition numberDefinition)
         throws IOException
     {
         final Properties props = getProperties(numberDefinition);
         if (props == null) {
-            return numberDefinition.getInitialValue();
+            final String propName = numberDefinition.getPropertyName();
+            ephemeralProperties.setProperty(propName, numberDefinition.getInitialValue());
+            return new ValueProvider.PropertyProvider(ephemeralProperties, propName);
         }
-        return findCurrentValue(props, numberDefinition);
+        else {
+            return findCurrentValue(props, numberDefinition);
+        }
     }
 
-    private String findCurrentValue(final Properties props, final NumberDefinition numberDefinition)
+    private ValueProvider findCurrentValue(final Properties props, final NumberDefinition numberDefinition)
     {
         final String propName = numberDefinition.getPropertyName();
         final boolean hasProperty = props.containsKey(propName);
 
         final boolean createProperty = IWFCEnum.checkState(numberDefinition.getOnMissingProperty(), hasProperty, propName);
 
-        String currentValue = null;
         if (hasProperty) {
-            currentValue = props.getProperty(propName);
+            return new ValueProvider.PropertyProvider(props, propName);
         }
         else if (createProperty) {
-            currentValue = numberDefinition.getInitialValue();
-            props.setProperty(propName, currentValue);
+            props.setProperty(propName, numberDefinition.getInitialValue());
+            return new ValueProvider.PropertyProvider(props, propName);
         }
-
-        return currentValue;
+        else {
+            return ValueProvider.NULL_PROVIDER;
+        }
     }
 
     @VisibleForTesting
@@ -109,7 +115,6 @@ public class PropertyCache
             }
         }
 
-        Preconditions.checkState(propertyCacheEntry != null); // This can only be null for an ephemeral property (no backing properties file)
         return propertyCacheEntry.getProps();
     }
 

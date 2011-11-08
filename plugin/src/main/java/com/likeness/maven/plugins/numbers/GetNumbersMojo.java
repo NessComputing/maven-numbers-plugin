@@ -41,8 +41,8 @@ public class GetNumbersMojo extends AbstractNumbersMojo
         if (!ArrayUtils.isEmpty(numberDefinitions)) {
             for (NumberDefinition numberDefinition : numberDefinitions) {
                 numberDefinition.check();
-                final String numberPropertyValue = propertyCache.getPropertyValue(numberDefinition);
-                final NumberField numberField = new NumberField(numberDefinition, numberPropertyValue);
+                final ValueProvider numberValue = propertyCache.getPropertyValue(numberDefinition);
+                final NumberField numberField = new NumberField(numberDefinition, numberValue);
                 result.add(numberField);
             }
         }

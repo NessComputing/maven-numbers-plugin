@@ -16,27 +16,48 @@ public class NumberField implements PropertyElement
     private static final Pattern MATCH_GROUPS = Pattern.compile("\\d+|[^\\d]+");
 
     private final NumberDefinition numberDefinition;
+    private final ValueProvider valueProvider;
 
     private final List<String> elements = Lists.newArrayList();
     private final List<Integer> numberElements = Lists.newArrayList();
 
-    public NumberField(final NumberDefinition numberDefinition, final String value)
+    public NumberField(final NumberDefinition numberDefinition, final ValueProvider valueProvider)
     {
         this.numberDefinition = numberDefinition;
+        this.valueProvider = valueProvider;
+    }
 
-        if (value != null) {
-            final Matcher m = MATCH_GROUPS.matcher(value);
 
-            while (m.find()) {
-                final String matchValue = m.group();
-                elements.add(matchValue);
-                if (isNumber(matchValue)) {
-                    numberElements.add(elements.size() - 1);
-                }
+    @Override
+    public String getPropertyName()
+    {
+        return numberDefinition.getPropertyName();
+    }
+
+    @Override
+    public String getPropertyValue()
+    {
+        parse();
+        return numberElements.isEmpty() ? null : elements.get(numberElements.get(numberDefinition.getFieldNumber()));
+    }
+
+    private void parse()
+    {
+        final String value = valueProvider.getValue();
+
+        final Matcher m = MATCH_GROUPS.matcher(value);
+        elements.clear();
+        numberElements.clear();
+
+        while (m.find()) {
+            final String matchValue = m.group();
+            elements.add(matchValue);
+            if (isNumber(matchValue)) {
+                numberElements.add(elements.size() - 1);
             }
-
-            Preconditions.checkState(numberElements.size() > numberDefinition.getFieldNumber(), format("Only %d fields in %s, field %d requested.", numberElements.size(), value, numberDefinition.getFieldNumber()));
         }
+
+        Preconditions.checkState(numberElements.size() > numberDefinition.getFieldNumber(), format("Only %d fields in %s, field %d requested.", numberElements.size(), value, numberDefinition.getFieldNumber()));
     }
 
     private boolean isNumber(final CharSequence c) {
@@ -48,6 +69,23 @@ public class NumberField implements PropertyElement
         return true;
     }
 
+    public void increment()
+    {
+        final Long value = getNumberValue();
+        if (value != null) {
+            setNumberValue(value + numberDefinition.getIncrement());
+        }
+    }
+
+    public void setNumberValue(final Long value)
+    {
+        parse();
+        if (!numberElements.isEmpty()) {
+            elements.set(numberElements.get(numberDefinition.getFieldNumber()), value.toString());
+            valueProvider.setValue(StringUtils.join(elements, null));
+        }
+    }
+
     public Long getNumberValue()
     {
         String fieldValue = getPropertyValue();
@@ -55,20 +93,9 @@ public class NumberField implements PropertyElement
     }
 
     @Override
-    public String getPropertyName()
-    {
-        return numberDefinition.getPropertyName();
-    }
-
-    @Override
-    public String getPropertyValue()
-    {
-        return numberElements.isEmpty() ? null : elements.get(numberElements.get(numberDefinition.getFieldNumber()));
-    }
-
-    @Override
     public String toString()
     {
+        parse();
         return StringUtils.join(elements, null);
     }
 }

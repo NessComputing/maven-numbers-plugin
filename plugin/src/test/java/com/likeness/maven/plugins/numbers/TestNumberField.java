@@ -1,6 +1,7 @@
 package com.likeness.maven.plugins.numbers;
 
-import com.likeness.maven.plugins.numbers.NumberField;
+import java.util.Properties;
+
 import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,7 +16,9 @@ public class TestNumberField
             .setFieldNumber(0);
         f1.check();
 
-        final NumberField nf1 = new NumberField(f1, "100");
+        final Properties props = new Properties();
+        props.setProperty("hello", "100");
+        final NumberField nf1 = new NumberField(f1, new ValueProvider.PropertyProvider(props, f1.getPropertyName()));
         Assert.assertEquals(100L, nf1.getNumberValue().longValue());
     }
 
@@ -36,9 +39,13 @@ public class TestNumberField
         f3.check();
 
         final String value = "4.8.15";
-        final NumberField nf1 = new NumberField(f1, value);
-        final NumberField nf2 = new NumberField(f2, value);
-        final NumberField nf3 = new NumberField(f3, value);
+
+        final Properties props = new Properties();
+        props.setProperty("hello", value);
+
+        final NumberField nf1 = new NumberField(f1, new ValueProvider.PropertyProvider(props, f1.getPropertyName()));
+        final NumberField nf2 = new NumberField(f2, new ValueProvider.PropertyProvider(props, f2.getPropertyName()));
+        final NumberField nf3 = new NumberField(f3, new ValueProvider.PropertyProvider(props, f3.getPropertyName()));
         Assert.assertEquals(4L, nf1.getNumberValue().longValue());
         Assert.assertEquals(8L, nf2.getNumberValue().longValue());
         Assert.assertEquals(15L, nf3.getNumberValue().longValue());
@@ -69,10 +76,14 @@ public class TestNumberField
         f4.check();
 
         final String value = "3.2-alpha-1-test-4";
-        final NumberField nf1 = new NumberField(f1, value);
-        final NumberField nf2 = new NumberField(f2, value);
-        final NumberField nf3 = new NumberField(f3, value);
-        final NumberField nf4 = new NumberField(f4, value);
+
+        final Properties props = new Properties();
+        props.setProperty("hello", value);
+
+        final NumberField nf1 = new NumberField(f1, new ValueProvider.PropertyProvider(props, f1.getPropertyName()));
+        final NumberField nf2 = new NumberField(f2, new ValueProvider.PropertyProvider(props, f2.getPropertyName()));
+        final NumberField nf3 = new NumberField(f3, new ValueProvider.PropertyProvider(props, f3.getPropertyName()));
+        final NumberField nf4 = new NumberField(f4, new ValueProvider.PropertyProvider(props, f4.getPropertyName()));
 
         Assert.assertEquals(3L, nf1.getNumberValue().longValue());
         Assert.assertEquals(2L, nf2.getNumberValue().longValue());
@@ -83,6 +94,67 @@ public class TestNumberField
         Assert.assertEquals(value, nf2.toString());
         Assert.assertEquals(value, nf3.toString());
         Assert.assertEquals(value, nf4.toString());
+    }
+
+    @Test
+    public void testIncrementSingle()
+    {
+        final NumberDefinition f1 = new NumberDefinition()
+            .setId("hello")
+            .setFieldNumber(0);
+
+        final String value = "foobar-1.2-barfoo-3";
+
+        final Properties props = new Properties();
+        props.setProperty("hello", value);
+
+        final NumberField nf1 = new NumberField(f1, new ValueProvider.PropertyProvider(props, f1.getPropertyName()));
+
+        Assert.assertEquals(1L, nf1.getNumberValue().longValue());
+        Assert.assertEquals(value, nf1.toString());
+
+        nf1.increment();
+
+        Assert.assertEquals(2L, nf1.getNumberValue().longValue());
+        Assert.assertEquals("foobar-2.2-barfoo-3", nf1.toString());
+    }
+
+    @Test
+    public void testIncrement2()
+    {
+        final NumberDefinition f1 = new NumberDefinition()
+            .setId("hello")
+            .setFieldNumber(0);
+        final NumberDefinition f2 = new NumberDefinition()
+            .setId("hello")
+            .setFieldNumber(1);
+        f1.check();
+        f2.check();
+
+        final String value = "4.8";
+
+        final Properties props = new Properties();
+        props.setProperty("hello", value);
+
+        final NumberField nf1 = new NumberField(f1, new ValueProvider.PropertyProvider(props, f1.getPropertyName()));
+        final NumberField nf2 = new NumberField(f2, new ValueProvider.PropertyProvider(props, f2.getPropertyName()));
+
+        Assert.assertEquals(4L, nf1.getNumberValue().longValue());
+        Assert.assertEquals(8L, nf2.getNumberValue().longValue());
+        Assert.assertEquals(value, nf1.toString());
+        Assert.assertEquals(value, nf2.toString());
+
+        nf1.increment();
+        Assert.assertEquals(5L, nf1.getNumberValue().longValue());
+        Assert.assertEquals(8L, nf2.getNumberValue().longValue());
+        Assert.assertEquals("5.8", nf1.toString());
+        Assert.assertEquals("5.8", nf2.toString());
+
+        nf2.increment();
+        Assert.assertEquals(5L, nf1.getNumberValue().longValue());
+        Assert.assertEquals(9L, nf2.getNumberValue().longValue());
+        Assert.assertEquals("5.9", nf1.toString());
+        Assert.assertEquals("5.9", nf2.toString());
     }
 }
     

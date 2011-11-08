@@ -52,8 +52,8 @@ public class TestPropertyCache
     {
         final NumberDefinition ephemeral = new NumberDefinition().setId("hello");
         ephemeral.check();
-        String value = pc.getPropertyValue(ephemeral);
-        Assert.assertEquals(ephemeral.getInitialValue(), value);
+        ValueProvider valueProvider = pc.getPropertyValue(ephemeral);
+        Assert.assertEquals(ephemeral.getInitialValue(), valueProvider.getValue());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -66,7 +66,7 @@ public class TestPropertyCache
                 .setOnMissingProperty("IGNORE")
                 .setPropertyFile(new File("/does/not/exist"));
         fileBacked.check();
-        String value = pc.getPropertyValue(fileBacked);
+        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
     }
 
     @Test
@@ -83,8 +83,8 @@ public class TestPropertyCache
                 .setOnMissingProperty("CREATE")
                 .setPropertyFile(propFile);
         fileBacked.check();
-        String value = pc.getPropertyValue(fileBacked);
-        Assert.assertEquals(fileBacked.getInitialValue(), value);
+        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
+        Assert.assertEquals(fileBacked.getInitialValue(), valueProvider.getValue());
     }
 
     @Test
@@ -101,8 +101,8 @@ public class TestPropertyCache
                 .setOnMissingProperty("IGNORE")
                 .setPropertyFile(propFile);
         fileBacked.check();
-        String value = pc.getPropertyValue(fileBacked);
-        Assert.assertNull(value);
+        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
+        Assert.assertNull(valueProvider.getValue());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -121,7 +121,7 @@ public class TestPropertyCache
                 .setOnMissingProperty("FAIL")
                 .setPropertyFile(propFile);
         fileBacked.check();
-        String value = pc.getPropertyValue(fileBacked);
+        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
     }
 
     public void testLoadProperty()
@@ -142,8 +142,8 @@ public class TestPropertyCache
                 .setOnMissingProperty("FAIL")
                 .setPropertyFile(propFile);
         fileBacked.check();
-        String value = pc.getPropertyValue(fileBacked);
-        Assert.assertEquals(propValue, value);
+        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
+        Assert.assertEquals(propValue, valueProvider.getValue());
     }
 
     public void testIgnoreCreate()
@@ -164,8 +164,8 @@ public class TestPropertyCache
                 .setOnMissingProperty("CREATE")
                 .setPropertyFile(propFile);
         fileBacked.check();
-        String value = pc.getPropertyValue(fileBacked);
-        Assert.assertEquals(propValue, value);
+        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
+        Assert.assertEquals(propValue, valueProvider.getValue());
     }
 
     public void samePropertyObject()
@@ -193,8 +193,8 @@ public class TestPropertyCache
 
         n1.check();
         n2.check();
-        Assert.assertEquals("hello", pc.getPropertyValue(n1));
-        Assert.assertEquals("world", pc.getPropertyValue(n2));
+        Assert.assertEquals("hello", pc.getPropertyValue(n1).getValue());
+        Assert.assertEquals("world", pc.getPropertyValue(n2).getValue());
 
         Assert.assertSame(pc.getProperties(n1), pc.getProperties(n2));
     }
