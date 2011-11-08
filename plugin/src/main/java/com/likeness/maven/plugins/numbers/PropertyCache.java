@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import javax.annotation.Nonnull;
 
+import com.likeness.maven.plugins.numbers.beans.AbstractDefinition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -43,18 +44,19 @@ public class PropertyCache
         }
     }
 
-    private ValueProvider findCurrentValue(final Properties props, final NumberDefinition numberDefinition)
+    @VisibleForTesting
+    ValueProvider findCurrentValue(final Properties props, final AbstractDefinition<?> definition)
     {
-        final String propName = numberDefinition.getPropertyName();
+        final String propName = definition.getPropertyName();
         final boolean hasProperty = props.containsKey(propName);
 
-        final boolean createProperty = IWFCEnum.checkState(numberDefinition.getOnMissingProperty(), hasProperty, propName);
+        final boolean createProperty = IWFCEnum.checkState(definition.getOnMissingProperty(), hasProperty, propName);
 
         if (hasProperty) {
             return new ValueProvider.PropertyProvider(props, propName);
         }
         else if (createProperty) {
-            props.setProperty(propName, numberDefinition.getInitialValue());
+            props.setProperty(propName, definition.getInitialValue());
             return new ValueProvider.PropertyProvider(props, propName);
         }
         else {
