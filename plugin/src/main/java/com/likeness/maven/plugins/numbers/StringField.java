@@ -34,8 +34,16 @@ public class StringField implements PropertyElement
     @Override
     public String getPropertyValue()
     {
-        final List<String> values = Lists.newArrayList(valueProvider.getValue());
+        final List<String> values = Lists.newArrayList();
+
+        final String propValue = valueProvider.getValue();
         final List<String> definedValues = stringDefinition.getValues();
+
+        // Only add the value from the provider if it is not null.
+        if (propValue != null) {
+            values.add(propValue);
+        }
+
         if (definedValues != null) {
             values.addAll(definedValues);
         }
@@ -43,14 +51,8 @@ public class StringField implements PropertyElement
         String result = null;
         for (String value : values) {
             result = value;
-            if (!StringUtils.isBlank(value)) {
-                return result;
-            }
-            else if (value == null) {
-                continue;
-            }
-            else if (stringDefinition.isBlankIsValid()) {
-                return result;
+            if (!StringUtils.isBlank(value) || stringDefinition.isBlankIsValid()) {
+                return Objects.firstNonNull(result, "");
             }
         }
 

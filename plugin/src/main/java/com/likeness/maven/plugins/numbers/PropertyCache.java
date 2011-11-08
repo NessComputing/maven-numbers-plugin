@@ -30,17 +30,20 @@ public class PropertyCache
 
     private final Properties ephemeralProperties = new Properties();
 
-    public ValueProvider getPropertyValue(final NumberDefinition numberDefinition)
+    public ValueProvider getPropertyValue(final AbstractDefinition<?> definition)
         throws IOException
     {
-        final Properties props = getProperties(numberDefinition);
+        final Properties props = getProperties(definition);
         if (props == null) {
-            final String propName = numberDefinition.getPropertyName();
-            ephemeralProperties.setProperty(propName, numberDefinition.getInitialValue());
+            final String propName = definition.getPropertyName();
+            final String value = definition.getInitialValue();
+            if (value != null) {
+                ephemeralProperties.setProperty(propName, value);
+            }
             return new ValueProvider.PropertyProvider(ephemeralProperties, propName);
         }
         else {
-            return findCurrentValue(props, numberDefinition);
+            return findCurrentValue(props, definition);
         }
     }
 
@@ -65,10 +68,10 @@ public class PropertyCache
     }
 
     @VisibleForTesting
-    Properties getProperties(final NumberDefinition numberDefinition)
+    Properties getProperties(final AbstractDefinition<?> definition)
         throws IOException
     {
-        final File definitionPropertyFile = numberDefinition.getPropertyFile();
+        final File definitionPropertyFile = definition.getPropertyFile();
 
         // Ephemeral, so return null.
         if (definitionPropertyFile == null) {
@@ -79,7 +82,7 @@ public class PropertyCache
         final File propertyFile = definitionPropertyFile.getCanonicalFile();
 
         // Throws an exception if the file must exist and does not.
-        final boolean createFile = IWFCEnum.checkState(numberDefinition.getOnMissingFile(), propertyFile.exists(), definitionPropertyFile.getCanonicalPath());
+        final boolean createFile = IWFCEnum.checkState(definition.getOnMissingFile(), propertyFile.exists(), definitionPropertyFile.getCanonicalPath());
 
         propertyCacheEntry = propFiles.get(propertyFile);
 

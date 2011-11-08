@@ -26,13 +26,16 @@ public class GetNumbersMojo extends AbstractNumbersMojo
     {
         LOG.debug("Running GetNumbers");
         final List<PropertyElement> propertyElements = Lists.newArrayList();
-        final List<NumberField> numberFields = createNumbers(numbers);
-        propertyElements.addAll(numberFields);
+        propertyElements.addAll(createNumbers(numbers));
+        propertyElements.addAll(createStrings(strings));
 
         for (PropertyElement pe : propertyElements) {
             if (pe.isExport()) {
-                project.getProperties().setProperty(pe.getPropertyName(), pe.getPropertyValue());
-                LOG.info("Exporting Property name: %s, value: %s", pe.getPropertyName(), pe.getPropertyValue());
+                final String value = pe.getPropertyValue();
+                if (value != null) {
+                    project.getProperties().setProperty(pe.getPropertyName(), value);
+                    LOG.info("Exporting Property name: %s, value: %s", pe.getPropertyName(), value);
+                }
             }
             else {
                 LOG.info("Property name: %s, value: %s", pe.getPropertyName(), pe.getPropertyValue());
@@ -64,9 +67,9 @@ public class GetNumbersMojo extends AbstractNumbersMojo
         if (!ArrayUtils.isEmpty(stringDefinitions)) {
             for (StringDefinition stringDefinition : stringDefinitions) {
                 stringDefinition.check();
-                // final ValueProvider stringValue = propertyCache.getPropertyValue(stringDefinition);
-                // final StringField stringField = new StringField(stringDefinition, stringValue);
-                // result.add(stringField);
+                final ValueProvider stringValue = propertyCache.getPropertyValue(stringDefinition);
+                final StringField stringField = new StringField(stringDefinition, stringValue);
+                result.add(stringField);
             }
         }
         return result;

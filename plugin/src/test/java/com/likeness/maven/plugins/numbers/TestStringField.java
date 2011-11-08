@@ -82,7 +82,7 @@ public class TestStringField
     }
 
     @Test
-    public void testIgnoreNullValues()
+    public void testNullValueIsEmptyString()
     {
         final List<String> values = Lists.newArrayList();
         values.add(null);
@@ -96,7 +96,7 @@ public class TestStringField
         f1.check();
 
         final StringField sf1 = new StringField(f1, ValueProvider.NULL_PROVIDER);
-        Assert.assertEquals("wibble", sf1.getPropertyValue());
+        Assert.assertEquals("", sf1.getPropertyValue());
     }
 
     @Test
@@ -201,7 +201,39 @@ public class TestStringField
         final PropertyCache propertyCache = new PropertyCache();
         final ValueProvider provider = propertyCache.findCurrentValue(new Properties(), f1);
 
-        final StringField sf1 = new StringField(f1, ValueProvider.NULL_PROVIDER);
+        final StringField sf1 = new StringField(f1, provider);
         Assert.assertEquals(null, sf1.getPropertyValue());
+    }
+
+    @Test
+    public void testBlankPropertyValue()
+    {
+        final StringDefinition f1 = new StringDefinition()
+            .setId("hello")
+            .setBlankIsValid(true);
+
+        f1.check();
+
+        final PropertyCache propertyCache = new PropertyCache();
+        final Properties props = new Properties();
+        props.setProperty("hello", "");
+        final ValueProvider provider = propertyCache.findCurrentValue(props, f1);
+
+        final StringField sf1 = new StringField(f1, provider);
+        Assert.assertEquals("", sf1.getPropertyValue());
+    }
+
+    @Test
+    public void testBlankValue()
+    {
+        final StringDefinition f1 = new StringDefinition()
+            .setId("hello")
+            .setValues(ImmutableList.of("", "foo"))
+            .setBlankIsValid(true);
+
+        f1.check();
+
+        final StringField sf1 = new StringField(f1, ValueProvider.NULL_PROVIDER);
+        Assert.assertEquals("", sf1.getPropertyValue());
     }
 }
