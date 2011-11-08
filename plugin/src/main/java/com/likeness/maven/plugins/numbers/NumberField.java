@@ -27,7 +27,6 @@ public class NumberField implements PropertyElement
         this.valueProvider = valueProvider;
     }
 
-
     @Override
     public String getPropertyName()
     {

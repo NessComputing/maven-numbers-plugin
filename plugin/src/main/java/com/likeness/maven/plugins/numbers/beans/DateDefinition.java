@@ -1,5 +1,7 @@
 package com.likeness.maven.plugins.numbers.beans;
 
+import java.io.File;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -21,11 +23,16 @@ public class DateDefinition extends AbstractDefinition<DateDefinition>
     DateDefinition(final String id,
                    final boolean skip,
                    final boolean export,
+                   final String initialValue,
                    final String format,
                    final String timezone,
-                   final long value)
+                   final long value,
+                   final String propertyName,
+                   final File propertyFile,
+                   final IWFCEnum onMissingFile,
+                   final IWFCEnum onMissingProperty)
     {
-        super(id, skip, export);
+        super(id, skip, export, initialValue, propertyName, propertyFile, onMissingFile, onMissingProperty);
 
         this.format = format;
         this.timezone = timezone;

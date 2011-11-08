@@ -1,5 +1,7 @@
 package com.likeness.maven.plugins.numbers.beans;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -18,13 +20,38 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
     /** Whether to export this number directly. */
     private boolean export = false;
 
+    /** Name of the property from the properties file. */
+    private String propertyName = null;
+
+    /** Name of the properties file to persist the count. */
+    private File propertyFile = null;
+
+    /** What to do when the property is missing from the file. */
+    private IWFCEnum onMissingFile = IWFCEnum.FAIL;
+
+    /** What to do when the property is missing from the file. */
+    private IWFCEnum onMissingProperty = IWFCEnum.FAIL;
+
+    /** The initial value for this field. */
+    private String initialValue = null;
+
     protected AbstractDefinition(final String id,
                                  final boolean skip,
-                                 final boolean export)
+                                 final boolean export,
+                                 final String initialValue,
+                                 final String propertyName,
+                                 final File propertyFile,
+                                 final IWFCEnum onMissingFile,
+                                 final IWFCEnum onMissingProperty)
     {
         this.id = id;
         this.skip = skip;
         this.export = export;
+        this.initialValue = initialValue;
+        this.propertyName = propertyName;
+        this.propertyFile = propertyFile;
+        this.onMissingFile = onMissingFile;
+        this.onMissingProperty = onMissingProperty;
     }
 
     public AbstractDefinition()
@@ -53,6 +80,17 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return (T) this;
     }
 
+    public String getInitialValue()
+    {
+        return initialValue;
+    }
+
+    public T setInitialValue(final String initialValue)
+    {
+        this.initialValue = initialValue;
+        return (T) this;
+    }
+
     public boolean isExport()
     {
         return export;
@@ -61,6 +99,50 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
     public T setExport(final boolean export)
     {
         this.export = export;
+        return (T) this;
+    }
+
+    public String getPropertyName()
+    {
+        return StringUtils.isNotBlank(propertyName) ? propertyName : getId();
+    }
+
+    public T setPropertyName(final String propertyName)
+    {
+        this.propertyName = propertyName;
+        return (T) this;
+    }
+
+    public File getPropertyFile()
+    {
+        return propertyFile;
+    }
+
+    public T setPropertyFile(final File propertyFile)
+    {
+        this.propertyFile = propertyFile;
+        return (T) this;
+    }
+
+    public IWFCEnum getOnMissingFile()
+    {
+        return onMissingFile;
+    }
+
+    public T setOnMissingFile(final String onMissingFile)
+    {
+        this.onMissingFile = IWFCEnum.forString(onMissingFile);
+        return (T) this;
+    }
+
+    public IWFCEnum getOnMissingProperty()
+    {
+        return onMissingProperty;
+    }
+
+    public T setOnMissingProperty(final String onMissingProperty)
+    {
+        this.onMissingProperty = IWFCEnum.forString(onMissingProperty);
         return (T) this;
     }
 

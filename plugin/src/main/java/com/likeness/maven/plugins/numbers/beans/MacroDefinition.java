@@ -1,5 +1,6 @@
 package com.likeness.maven.plugins.numbers.beans;
 
+import java.io.File;
 import java.util.Properties;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -10,24 +11,36 @@ import com.google.common.annotations.VisibleForTesting;
 
 public class MacroDefinition extends AbstractDefinition<MacroDefinition>
 {
-    /** Macro type. */
+    /**
+     * Macro type.
+     */
     private String macroType = null;
 
-    /** Class for this macro. */
+    /**
+     * Class for this macro.
+     */
     private String macroClass = null;
 
-    /** Macro specific properties. */
+    /**
+     * Macro specific properties.
+     */
     private Properties properties = null;
 
     @VisibleForTesting
-    MacroDefinition(final String id,
-                    final boolean skip,
-                    final boolean export,
-                    final String macroType,
-                    final String macroClass,
-                    final Properties properties)
+    MacroDefinition(
+            final String id,
+            final boolean skip,
+            final boolean export,
+            final String initialValue,
+            final String macroType,
+            final String macroClass,
+            final Properties properties,
+            final String propertyName,
+            final File propertyFile,
+            final IWFCEnum onMissingFile,
+            final IWFCEnum onMissingProperty)
     {
-        super(id, skip, export);
+        super(id, skip, export, initialValue, propertyName, propertyFile, onMissingFile, onMissingProperty);
 
         this.macroType = macroType;
         this.macroClass = macroClass;
@@ -75,10 +88,13 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
     @Override
     public boolean equals(final Object other)
     {
-        if (!(other instanceof MacroDefinition))
+        if (!(other instanceof MacroDefinition)) {
             return false;
+        }
         MacroDefinition castOther = (MacroDefinition) other;
-        return new EqualsBuilder().append(macroType, castOther.macroType).append(macroClass, castOther.macroClass).append(properties, castOther.properties).isEquals();
+        return new EqualsBuilder().append(macroType, castOther.macroType).append(macroClass,
+                                                                                 castOther.macroClass).append(properties,
+                                                                                                              castOther.properties).isEquals();
     }
 
     @Override
@@ -90,7 +106,9 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
     @Override
     public String toString()
     {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("macroType", macroType).append("macroClass", macroClass).append("properties", properties).toString();
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("macroType", macroType).append(
+                "macroClass",
+                macroClass).append("properties", properties).toString();
     }
 
 
