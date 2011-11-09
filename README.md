@@ -77,7 +77,7 @@ Configuration
         <dates>
             <date>
                 <id>regular</id>
-                <format>yyyyMMdd_ssmmHH</format>
+                <format>yyyyMMdd_HHmmss</format>
             </date>
         </dates>
         <macros>

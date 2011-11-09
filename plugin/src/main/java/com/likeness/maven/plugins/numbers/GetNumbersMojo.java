@@ -3,6 +3,7 @@ package com.likeness.maven.plugins.numbers;
 import java.io.IOException;
 import java.util.List;
 
+import com.likeness.maven.plugins.numbers.beans.DateDefinition;
 import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -28,6 +29,7 @@ public class GetNumbersMojo extends AbstractNumbersMojo
         final List<PropertyElement> propertyElements = Lists.newArrayList();
         propertyElements.addAll(createNumbers(numbers));
         propertyElements.addAll(createStrings(strings));
+        propertyElements.addAll(createDates(dates));
 
         for (PropertyElement pe : propertyElements) {
             if (pe.isExport()) {
@@ -70,6 +72,22 @@ public class GetNumbersMojo extends AbstractNumbersMojo
                 final ValueProvider stringValue = propertyCache.getPropertyValue(stringDefinition);
                 final StringField stringField = new StringField(stringDefinition, stringValue);
                 result.add(stringField);
+            }
+        }
+        return result;
+    }
+
+    private List<DateField> createDates(final DateDefinition[] dateDefinitions)
+        throws IOException
+    {
+        final List<DateField> result = Lists.newArrayList();
+
+        if (!ArrayUtils.isEmpty(dateDefinitions)) {
+            for (DateDefinition dateDefinition : dateDefinitions) {
+                dateDefinition.check();
+                final ValueProvider dateValue = propertyCache.getPropertyValue(dateDefinition);
+                final DateField dateField = new DateField(dateDefinition, dateValue);
+                result.add(dateField);
             }
         }
         return result;

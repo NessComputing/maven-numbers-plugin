@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>test-group</groupId>
+    <artifactId>test-artifact-${testName}</artifactId>
+    <version>1.0</version>
+
+    <build>
+        <defaultGoal>package</defaultGoal>
+
+        <plugins>
+            <plugin>
+                <groupId>com.likeness.maven.plugins</groupId>
+                <artifactId>maven-numbers-plugin</artifactId>
+                <version>@project.version@</version>
+                <executions>
+                    <execution>
+                        <id>fetchNumbers</id>
+                        <goals>
+                            <goal>get</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <dates>
+                                <date>
+                                    <id>regular-utc</id>
+                                    <timezone>UTC</timezone>
+                                    <format>yyyyMMdd_HHmmss</format>
+                                    <export>true</export>
+                                </date>
+                                <date>
+                                    <id>regular</id>
+                                    <format>yyyyMMdd_HHmmss</format>
+                                    <export>true</export>
+                                </date>
+                                <date>
+                                    <id>epoch-utc</id>
+                                    <timezone>UTC</timezone>
+                                    <format>yyyyMMdd_HHmmss</format>
+                                    <export>true</export>
+                                </date>
+                                <date>
+                                    <id>epoch</id>
+                                    <format>yyyyMMdd_HHmmss</format>
+                                    <export>true</export>
+                                </date>
+                            </dates>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <regular>${regular}</regular>
+                            <regular-utc>${regular-utc}</regular-utc>
+                            <epoch>${epoch}</epoch>
+                            <epoch-utc>${epoch-utc}</epoch-utc>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

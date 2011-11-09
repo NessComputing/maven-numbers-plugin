@@ -35,6 +35,9 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
     /** The initial value for this field. */
     private String initialValue = null;
 
+    /** Format for this element. */
+    private String format = null;
+
     protected AbstractDefinition(final String id,
                                  final boolean skip,
                                  final boolean export,
@@ -42,7 +45,8 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
                                  final String propertyName,
                                  final File propertyFile,
                                  final IWFCEnum onMissingFile,
-                                 final IWFCEnum onMissingProperty)
+                                 final IWFCEnum onMissingProperty,
+                                 final String format)
     {
         this.id = id;
         this.skip = skip;
@@ -52,6 +56,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         this.propertyFile = propertyFile;
         this.onMissingFile = onMissingFile;
         this.onMissingProperty = onMissingProperty;
+        this.format = format;
     }
 
     public AbstractDefinition()
@@ -143,6 +148,17 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
     public T setOnMissingProperty(final String onMissingProperty)
     {
         this.onMissingProperty = IWFCEnum.forString(onMissingProperty);
+        return (T) this;
+    }
+
+    public String getFormat()
+    {
+        return format;
+    }
+
+    public T setFormat(final String format)
+    {
+        this.format = format;
         return (T) this;
     }
 
