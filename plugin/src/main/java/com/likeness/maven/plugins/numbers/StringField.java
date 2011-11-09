@@ -12,6 +12,8 @@ import com.likeness.maven.plugins.numbers.beans.IWFEnum;
 import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import org.apache.commons.lang3.StringUtils;
 
+import static java.lang.String.format;
+
 public class StringField implements PropertyElement
 {
     private final StringDefinition stringDefinition;
@@ -57,7 +59,9 @@ public class StringField implements PropertyElement
         }
 
         IWFEnum.checkState(stringDefinition.getOnMissingValue(), false, "value");
-        return result;
+
+        final String format = stringDefinition.getFormat();
+        return format == null ? result : format(format, result);
     }
 
     @Override

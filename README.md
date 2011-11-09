@@ -181,6 +181,10 @@ Defines a text string for further replacement. This can be used to add default v
         <blankIsValid>...</blankIsValid>
         <onMissingValue>...</onMissingValue>
         <export>...</export>
+        <propertyFile>...</propertyFile>
+        <propertyName>...</propertyName>
+        <onMissingFile>...</onMissingFile>
+        <onMissingProperty>...</onMissingProperty>
     </string>
 
 * id - the id of the string. Required. Must be unique between numbers, strings, dates and macros.
@@ -188,6 +192,10 @@ Defines a text string for further replacement. This can be used to add default v
 * values - a list of strings that are used for the value. If a value is not set, the next one is used until a non-blank value is found or the list is exhausted. At least one value is required to be defined.
 * blankIsValid - true / false - whether an empty ('') string is treated as a valid value or whether the next value should be evaluated. Default is true.
 * onMissingValue - warn, fail, ignore - Action when no value was found. If warn or ignore are chosen and no value was found, the string subsequently is not defined which in turn might cause an error in a property definition.
+* propertyFile - A file to load and store the current state of the counter. Optional, if unset the count is ephemeral.
+* propertyName - The name of the property to load and save the counter. Optional, Default is the id.
+* onMissingFile - ignore, warn, fail, create - If the count should be stored in a file and the file does not exist, create the file. Otherwise, fail the build. Default is fail.
+* onMissingProperty - ignore, warn, fail, create  - If the count should be stored in a file and the file does not contain a property with its id, create the property with its initial value. Otherwise, fail the build. Default is fail.
 * export - export this number directly as a property. Default : false
 
 ### dates / date
@@ -202,6 +210,10 @@ Defines a date, time or date/time combination.
             <timezone>...</timezone>
             <value>...</value>
             <export>...</export>
+            <propertyFile>...</propertyFile>
+            <propertyName>...</propertyName>
+            <onMissingFile>...</onMissingFile>
+            <onMissingProperty>...</onMissingProperty>
         </date>
     </dates>
 
@@ -210,6 +222,10 @@ Defines a date, time or date/time combination.
 * format - A simpledateformat string for formatting a date. Required.
 * timezone - A valid java timezone name. Optional, defaults to system timezone.
 * value - Number of seconds since the epoch to format. Optional, if missing the current time is used. 
+* propertyFile - A file to load and store the current state of the counter. Optional, if unset the count is ephemeral.
+* propertyName - The name of the property to load and save the counter. Optional, Default is the id.
+* onMissingFile - ignore, warn, fail, create - If the count should be stored in a file and the file does not exist, create the file. Otherwise, fail the build. Default is fail.
+* onMissingProperty - ignore, warn, fail, create  - If the count should be stored in a file and the file does not contain a property with its id, create the property with its initial value. Otherwise, fail the build. Default is fail.
 * export - export this number directly as a property. Default : false
 
 ### macros / macro

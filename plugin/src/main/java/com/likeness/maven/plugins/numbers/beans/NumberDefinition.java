@@ -31,11 +31,12 @@ public class NumberDefinition extends AbstractDefinition<NumberDefinition>
                      final String propertyName,
                      final File propertyFile,
                      final IWFCEnum onMissingFile,
-                     final IWFCEnum onMissingProperty)
+                     final IWFCEnum onMissingProperty,
+                     final String format)
     {
         super(id, skip, export, 
               Objects.firstNonNull(initialValue, INITIAL_VALUE),
-              propertyName, propertyFile, onMissingFile, onMissingProperty);
+              propertyName, propertyFile, onMissingFile, onMissingProperty, format);
 
         this.fieldNumber = fieldNumber;
         this.increment = increment;

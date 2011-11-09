@@ -39,7 +39,9 @@ public class NumberField implements PropertyElement
     public String getPropertyValue()
     {
         parse();
-        return StringUtils.join(elements, null);
+        final String value = StringUtils.join(elements, null);
+        final String format = numberDefinition.getFormat();
+        return format == null ? value : format(format, value);
     }
 
     @Override

@@ -8,7 +8,7 @@ public class TestNumberDefinition
     @Test
     public void testValid()
     {
-        final NumberDefinition nd = new NumberDefinition("hello", false, true, "1", 0, 1, null, null, IWFCEnum.FAIL, IWFCEnum.FAIL);
+        final NumberDefinition nd = new NumberDefinition("hello", false, true, "1", 0, 1, null, null, IWFCEnum.FAIL, IWFCEnum.FAIL, null);
         nd.check();
     }
 

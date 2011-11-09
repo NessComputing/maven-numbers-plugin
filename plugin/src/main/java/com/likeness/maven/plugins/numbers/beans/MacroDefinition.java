@@ -38,9 +38,10 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
             final String propertyName,
             final File propertyFile,
             final IWFCEnum onMissingFile,
-            final IWFCEnum onMissingProperty)
+            final IWFCEnum onMissingProperty,
+            final String format)
     {
-        super(id, skip, export, initialValue, propertyName, propertyFile, onMissingFile, onMissingProperty);
+        super(id, skip, export, initialValue, propertyName, propertyFile, onMissingFile, onMissingProperty, format);
 
         this.macroType = macroType;
         this.macroClass = macroClass;
