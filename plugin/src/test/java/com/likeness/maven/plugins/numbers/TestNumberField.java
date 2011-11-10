@@ -2,9 +2,10 @@ package com.likeness.maven.plugins.numbers;
 
 import java.util.Properties;
 
-import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
 
 public class TestNumberField
 {

@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.likeness.maven.plugins.numbers.beans.DateDefinition;
@@ -15,11 +21,6 @@ import com.likeness.maven.plugins.numbers.beans.PropertyGroup;
 import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import com.likeness.maven.plugins.numbers.util.Log;
 import com.pyx4j.log4j.MavenLogAppender;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
 
 /**
  * Base code for all the mojos.

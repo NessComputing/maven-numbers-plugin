@@ -107,10 +107,11 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
     @Override
     public String toString()
     {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("macroType", macroType).append(
-                "macroClass",
-                macroClass).append("properties", properties).toString();
+        return new ToStringBuilder(this)
+            .appendSuper(super.toString())
+            .append("macroType", macroType)
+            .append("macroClass", macroClass)
+            .append("properties", properties)
+            .toString();
     }
-
-
 }

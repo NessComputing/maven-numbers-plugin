@@ -1,18 +1,15 @@
 package com.likeness.maven.plugins.numbers;
 
-import java.util.ArrayList;
+import static java.lang.String.format;
+
 import java.util.List;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.likeness.maven.plugins.numbers.PropertyElement;
-import com.likeness.maven.plugins.numbers.ValueProvider;
-import com.likeness.maven.plugins.numbers.beans.IWFEnum;
-import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import org.apache.commons.lang3.StringUtils;
 
-import static java.lang.String.format;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+import com.likeness.maven.plugins.numbers.beans.IWFEnum;
+import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 
 public class StringField implements PropertyElement
 {

@@ -1,11 +1,11 @@
 package com.likeness.maven.plugins.numbers.beans;
 
-import com.google.common.base.Preconditions;
-import com.likeness.maven.plugins.numbers.util.Log;
+import static java.lang.String.format;
 
 import java.util.Locale;
 
-import static java.lang.String.format;
+import com.google.common.base.Preconditions;
+import com.likeness.maven.plugins.numbers.util.Log;
 
 public enum IWFEnum
 {

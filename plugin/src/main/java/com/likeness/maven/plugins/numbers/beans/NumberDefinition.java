@@ -2,13 +2,10 @@ package com.likeness.maven.plugins.numbers.beans;
 
 import java.io.File;
 
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public class NumberDefinition extends AbstractDefinition<NumberDefinition>

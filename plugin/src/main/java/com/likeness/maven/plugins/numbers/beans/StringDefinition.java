@@ -3,13 +3,7 @@ package com.likeness.maven.plugins.numbers.beans;
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import com.google.common.annotations.VisibleForTesting;
-
-import javax.print.DocFlavor;
 
 public class StringDefinition extends AbstractDefinition<StringDefinition>
 {

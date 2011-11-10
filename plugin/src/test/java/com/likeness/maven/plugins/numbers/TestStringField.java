@@ -3,13 +3,12 @@ package com.likeness.maven.plugins.numbers;
 import java.util.List;
 import java.util.Properties;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.likeness.maven.plugins.numbers.beans.IWFCEnum;
-import com.likeness.maven.plugins.numbers.beans.IWFEnum;
-import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 
 public class TestStringField
 {

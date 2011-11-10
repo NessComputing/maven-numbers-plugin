@@ -1,15 +1,16 @@
 package com.likeness.maven.plugins.numbers;
 
+import static java.lang.String.format;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
-import org.apache.commons.lang3.StringUtils;
-
-import static java.lang.String.format;
 
 public class NumberField implements PropertyElement
 {

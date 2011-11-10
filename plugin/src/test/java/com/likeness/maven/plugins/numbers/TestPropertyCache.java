@@ -1,18 +1,17 @@
 package com.likeness.maven.plugins.numbers;
 
-import com.google.common.io.Closeables;
-import com.likeness.maven.plugins.numbers.PropertyCache;
-import com.likeness.maven.plugins.numbers.beans.IWFCEnum;
-import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Properties;
+import com.google.common.io.Closeables;
+import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
 
 public class TestPropertyCache
 {

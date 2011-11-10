@@ -8,10 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
-
 import javax.annotation.Nonnull;
 
-import com.likeness.maven.plugins.numbers.beans.AbstractDefinition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -20,8 +18,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.io.Closeables;
+import com.likeness.maven.plugins.numbers.beans.AbstractDefinition;
 import com.likeness.maven.plugins.numbers.beans.IWFCEnum;
-import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
 
 public class PropertyCache
 {
