@@ -241,6 +241,10 @@ Macros extend the functionality of the plugin.
             <properties>...</properties>
             <onMissingValue>...</onMissingValue>
             <export>...</export>
+            <propertyFile>...</propertyFile>
+            <propertyName>...</propertyName>
+            <onMissingFile>...</onMissingFile>
+            <onMissingProperty>...</onMissingProperty>
         </macro>
     </macros>
 

@@ -149,6 +149,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
         propertyElements.addAll(createNumbers(numbers));
         propertyElements.addAll(createStrings(strings));
         propertyElements.addAll(createDates(dates));
+        propertyElements.addAll(createMacros(macros));
 
         for (PropertyElement pe : propertyElements) {
             if (pe.isExport()) {
