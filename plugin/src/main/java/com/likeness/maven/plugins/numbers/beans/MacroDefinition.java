@@ -28,18 +28,18 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
 
     @VisibleForTesting
     MacroDefinition(
-            final String id,
-            final boolean skip,
-            final boolean export,
-            final String initialValue,
-            final String macroType,
-            final String macroClass,
-            final Properties properties,
-            final String propertyName,
-            final File propertyFile,
-            final IWFCEnum onMissingFile,
-            final IWFCEnum onMissingProperty,
-            final String format)
+        final String id,
+        final boolean skip,
+        final boolean export,
+        final String initialValue,
+        final String macroType,
+        final String macroClass,
+        final Properties properties,
+        final String propertyName,
+        final File propertyFile,
+        final IWFCEnum onMissingFile,
+        final IWFCEnum onMissingProperty,
+        final String format)
     {
         super(id, skip, export, initialValue, propertyName, propertyFile, onMissingFile, onMissingProperty, format);
 
@@ -58,7 +58,7 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
         return macroType;
     }
 
-    public MacroDefinition setMacroType(String macroType)
+    public MacroDefinition setMacroType(final String macroType)
     {
         this.macroType = macroType;
         return this;
@@ -69,7 +69,7 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
         return macroClass;
     }
 
-    public MacroDefinition setMacroClass(String macroClass)
+    public MacroDefinition setMacroClass(final String macroClass)
     {
         this.macroClass = macroClass;
         return this;
@@ -80,7 +80,7 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
         return properties;
     }
 
-    public MacroDefinition setProperties(Properties properties)
+    public MacroDefinition setProperties(final Properties properties)
     {
         this.properties = properties;
         return this;
@@ -93,9 +93,11 @@ public class MacroDefinition extends AbstractDefinition<MacroDefinition>
             return false;
         }
         MacroDefinition castOther = (MacroDefinition) other;
-        return new EqualsBuilder().append(macroType, castOther.macroType).append(macroClass,
-                                                                                 castOther.macroClass).append(properties,
-                                                                                                              castOther.properties).isEquals();
+        return new EqualsBuilder()
+            .append(macroType, castOther.macroType)
+            .append(macroClass, castOther.macroClass)
+            .append(properties, castOther.properties)
+            .isEquals();
     }
 
     @Override

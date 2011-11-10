@@ -4,7 +4,7 @@ public interface PropertyElement
 {
     String getPropertyName();
 
-    String getPropertyValue();
+    String getPropertyValue() throws Exception;
 
     boolean isExport();
 }
