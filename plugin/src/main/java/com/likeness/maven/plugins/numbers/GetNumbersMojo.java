@@ -1,6 +1,5 @@
 package com.likeness.maven.plugins.numbers;
 
-import java.util.List;
 
 
 /**
@@ -10,11 +9,8 @@ import java.util.List;
  */
 public class GetNumbersMojo extends AbstractNumbersMojo
 {
-    private final PropertyCache propertyCache = new PropertyCache();
-
     protected void doExecute() throws Exception
     {
         LOG.debug("Running GetNumbers");
-        final List<PropertyElement> propertyElements = loadPropertyElements();
     }
 }

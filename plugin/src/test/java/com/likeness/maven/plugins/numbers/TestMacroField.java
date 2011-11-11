@@ -1,15 +1,11 @@
 package com.likeness.maven.plugins.numbers;
 
-import java.util.List;
 import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
-import com.likeness.maven.plugins.numbers.beans.StringDefinition;
 import com.likeness.maven.plugins.numbers.macros.MacroType;
 
 public class TestMacroField
@@ -25,7 +21,7 @@ public class TestMacroField
             .setId("hello")
             .setMacroType("demo")
             .setProperties(mp);
-            
+
         m1.check();
 
         final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER);
@@ -44,7 +40,7 @@ public class TestMacroField
             .setId("hello")
             .setMacroType("demo")
             .setProperties(mp);
-            
+
         m1.check();
 
         final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER);
@@ -62,7 +58,7 @@ public class TestMacroField
             .setId("hello")
             .setMacroType("demo")
             .setProperties(mp);
-            
+
         m1.check();
 
         final Properties props = new Properties();

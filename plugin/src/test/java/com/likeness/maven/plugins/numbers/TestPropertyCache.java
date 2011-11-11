@@ -65,7 +65,7 @@ public class TestPropertyCache
                 .setOnMissingProperty("IGNORE")
                 .setPropertyFile(new File("/does/not/exist"));
         fileBacked.check();
-        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
+        pc.getPropertyValue(fileBacked);
     }
 
     @Test
@@ -120,7 +120,7 @@ public class TestPropertyCache
                 .setOnMissingProperty("FAIL")
                 .setPropertyFile(propFile);
         fileBacked.check();
-        ValueProvider valueProvider = pc.getPropertyValue(fileBacked);
+        pc.getPropertyValue(fileBacked);
     }
 
     public void testLoadProperty()

@@ -2,10 +2,12 @@ package com.likeness.maven.plugins.numbers;
 
 import static java.lang.String.format;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Preconditions;
@@ -21,6 +23,22 @@ public class NumberField implements PropertyElement
 
     private final List<String> elements = Lists.newArrayList();
     private final List<Integer> numberElements = Lists.newArrayList();
+
+    public static List<NumberField> createNumbers(final PropertyCache propertyCache, final NumberDefinition [] numberDefinitions)
+        throws IOException
+    {
+        final List<NumberField> result = Lists.newArrayList();
+
+        if (!ArrayUtils.isEmpty(numberDefinitions)) {
+            for (NumberDefinition numberDefinition : numberDefinitions) {
+                numberDefinition.check();
+                final ValueProvider numberValue = propertyCache.getPropertyValue(numberDefinition);
+                final NumberField numberField = new NumberField(numberDefinition, numberValue);
+                result.add(numberField);
+            }
+        }
+        return result;
+    }
 
     public NumberField(final NumberDefinition numberDefinition, final ValueProvider valueProvider)
     {

@@ -1,17 +1,14 @@
 package com.likeness.maven.plugins.numbers;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.likeness.maven.plugins.numbers.beans.DateDefinition;
@@ -105,10 +102,8 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected final Log LOG = Log.findLog();
 
     private final PropertyCache propertyCache = new PropertyCache();
-
-
-    protected final Map<File, Properties> propertiesFiles = Maps.newHashMap();
-    protected final Map<String, String> definedNumbers = Maps.newHashMap();
+    private final Map<String, String> props = Maps.newHashMap();
+    private final List<PropertyElement> propertyElements = Lists.newArrayList();
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -119,6 +114,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
                 LOG.debug("Skipping execution!");
             }
             else {
+                loadPropertyElements();
                 doExecute();
             }
         }
@@ -142,93 +138,27 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
      */
     protected abstract void doExecute() throws Exception;
 
-    protected List<PropertyElement> loadPropertyElements()
+    protected void loadPropertyElements()
         throws Exception
     {
-        final List<PropertyElement> propertyElements = Lists.newArrayList();
-        propertyElements.addAll(createNumbers(numbers));
-        propertyElements.addAll(createStrings(strings));
-        propertyElements.addAll(createDates(dates));
-        propertyElements.addAll(createMacros(macros));
+        propertyElements.addAll(NumberField.createNumbers(propertyCache, numbers));
+        propertyElements.addAll(StringField.createStrings(propertyCache, strings));
+        propertyElements.addAll(DateField.createDates(propertyCache, dates));
+        propertyElements.addAll(MacroField.createMacros(propertyCache, macros));
 
-        for (PropertyElement pe : propertyElements) {
+        for (final PropertyElement pe : propertyElements) {
+            final String value = pe.getPropertyValue();
+            props.put(pe.getPropertyName(), value);
+
             if (pe.isExport()) {
-                final String value = pe.getPropertyValue();
-                if (value != null) {
-                    project.getProperties().setProperty(pe.getPropertyName(), value);
-                    LOG.info("Exporting Property name: %s, value: %s", pe.getPropertyName(), value);
-                }
+                project.getProperties().setProperty(pe.getPropertyName(), Objects.firstNonNull(value, ""));
+                LOG.debug("Exporting Property name: %s, value: %s", pe.getPropertyName(), value);
             }
             else {
-                LOG.info("Property name: %s, value: %s", pe.getPropertyName(), pe.getPropertyValue());
+                LOG.debug("Property name: %s, value: %s", pe.getPropertyName(), Objects.firstNonNull(value, "<null>"));
             }
         }
 
-
-        return propertyElements;
-    }
-
-    private List<NumberField> createNumbers(final NumberDefinition [] numberDefinitions)
-        throws IOException
-    {
-        final List<NumberField> result = Lists.newArrayList();
-
-        if (!ArrayUtils.isEmpty(numberDefinitions)) {
-            for (NumberDefinition numberDefinition : numberDefinitions) {
-                numberDefinition.check();
-                final ValueProvider numberValue = propertyCache.getPropertyValue(numberDefinition);
-                final NumberField numberField = new NumberField(numberDefinition, numberValue);
-                result.add(numberField);
-            }
-        }
-        return result;
-    }
-
-    private List<StringField> createStrings(final StringDefinition[] stringDefinitions)
-        throws IOException
-    {
-        final List<StringField> result = Lists.newArrayList();
-
-        if (!ArrayUtils.isEmpty(stringDefinitions)) {
-            for (StringDefinition stringDefinition : stringDefinitions) {
-                stringDefinition.check();
-                final ValueProvider stringValue = propertyCache.getPropertyValue(stringDefinition);
-                final StringField stringField = new StringField(stringDefinition, stringValue);
-                result.add(stringField);
-            }
-        }
-        return result;
-    }
-
-    private List<DateField> createDates(final DateDefinition[] dateDefinitions)
-        throws IOException
-    {
-        final List<DateField> result = Lists.newArrayList();
-
-        if (!ArrayUtils.isEmpty(dateDefinitions)) {
-            for (DateDefinition dateDefinition : dateDefinitions) {
-                dateDefinition.check();
-                final ValueProvider dateValue = propertyCache.getPropertyValue(dateDefinition);
-                final DateField dateField = new DateField(dateDefinition, dateValue);
-                result.add(dateField);
-            }
-        }
-        return result;
-    }
-
-    private List<MacroField> createMacros(final MacroDefinition[] macroDefinitions)
-        throws IOException
-    {
-        final List<MacroField> result = Lists.newArrayList();
-
-        if (!ArrayUtils.isEmpty(macroDefinitions)) {
-            for (MacroDefinition macroDefinition : macroDefinitions) {
-                macroDefinition.check();
-                final ValueProvider macroValue = propertyCache.getPropertyValue(macroDefinition);
-                final MacroField macroField = new MacroField(macroDefinition, macroValue);
-                result.add(macroField);
-            }
-        }
-        return result;
+        final List<PropertyField> propertyFields = Lists.newArrayList();
     }
 }

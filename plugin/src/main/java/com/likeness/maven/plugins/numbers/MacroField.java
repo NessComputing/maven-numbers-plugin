@@ -2,8 +2,14 @@ package com.likeness.maven.plugins.numbers;
 
 import static java.lang.String.format;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
 import com.likeness.maven.plugins.numbers.macros.MacroType;
 
@@ -12,12 +18,28 @@ public class MacroField implements PropertyElement
     private final MacroDefinition macroDefinition;
     private final ValueProvider valueProvider;
 
+    public static List<MacroField> createMacros(final PropertyCache propertyCache, final MacroDefinition[] macroDefinitions)
+        throws IOException
+    {
+        final List<MacroField> result = Lists.newArrayList();
+
+        if (!ArrayUtils.isEmpty(macroDefinitions)) {
+            for (MacroDefinition macroDefinition : macroDefinitions) {
+                macroDefinition.check();
+                final ValueProvider macroValue = propertyCache.getPropertyValue(macroDefinition);
+                final MacroField macroField = new MacroField(macroDefinition, macroValue);
+                result.add(macroField);
+            }
+        }
+        return result;
+    }
+
     public MacroField(final MacroDefinition macroDefinition, final ValueProvider valueProvider)
     {
         this.macroDefinition = macroDefinition;
         this.valueProvider = valueProvider;
     }
-    
+
     @Override
     public String getPropertyName()
     {

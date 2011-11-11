@@ -65,6 +65,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return id;
     }
 
+    @SuppressWarnings("unchecked")
     public T setId(final String id)
     {
         this.id = id;
@@ -76,6 +77,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return skip;
     }
 
+    @SuppressWarnings("unchecked")
     public T setSkip(final boolean skip)
     {
         this.skip = skip;
@@ -87,6 +89,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return initialValue;
     }
 
+    @SuppressWarnings("unchecked")
     public T setInitialValue(final String initialValue)
     {
         this.initialValue = initialValue;
@@ -98,6 +101,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return export;
     }
 
+    @SuppressWarnings("unchecked")
     public T setExport(final boolean export)
     {
         this.export = export;
@@ -109,6 +113,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return StringUtils.isNotBlank(propertyName) ? propertyName : getId();
     }
 
+    @SuppressWarnings("unchecked")
     public T setPropertyName(final String propertyName)
     {
         this.propertyName = propertyName;
@@ -120,6 +125,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return propertyFile;
     }
 
+    @SuppressWarnings("unchecked")
     public T setPropertyFile(final File propertyFile)
     {
         this.propertyFile = propertyFile;
@@ -131,6 +137,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return onMissingFile;
     }
 
+    @SuppressWarnings("unchecked")
     public T setOnMissingFile(final String onMissingFile)
     {
         this.onMissingFile = IWFCEnum.forString(onMissingFile);
@@ -142,6 +149,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return onMissingProperty;
     }
 
+    @SuppressWarnings("unchecked")
     public T setOnMissingProperty(final String onMissingProperty)
     {
         this.onMissingProperty = IWFCEnum.forString(onMissingProperty);
@@ -153,6 +161,7 @@ public abstract class AbstractDefinition<T extends AbstractDefinition<T>>
         return format;
     }
 
+    @SuppressWarnings("unchecked")
     public T setFormat(final String format)
     {
         this.format = format;

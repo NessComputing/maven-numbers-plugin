@@ -1,10 +1,15 @@
 package com.likeness.maven.plugins.numbers;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.google.common.collect.Lists;
 import com.likeness.maven.plugins.numbers.beans.DateDefinition;
 
 public class DateField implements PropertyElement
@@ -12,12 +17,28 @@ public class DateField implements PropertyElement
     private final DateDefinition dateDefinition;
     private final ValueProvider valueProvider;
 
+    public static List<DateField> createDates(final PropertyCache propertyCache, final DateDefinition[] dateDefinitions)
+        throws IOException
+    {
+        final List<DateField> result = Lists.newArrayList();
+
+        if (!ArrayUtils.isEmpty(dateDefinitions)) {
+            for (DateDefinition dateDefinition : dateDefinitions) {
+                dateDefinition.check();
+                final ValueProvider dateValue = propertyCache.getPropertyValue(dateDefinition);
+                final DateField dateField = new DateField(dateDefinition, dateValue);
+                result.add(dateField);
+            }
+        }
+        return result;
+    }
+
     public DateField(final DateDefinition dateDefinition, final ValueProvider valueProvider)
     {
         this.dateDefinition = dateDefinition;
         this.valueProvider = valueProvider;
     }
-    
+
     @Override
     public String getPropertyName()
     {

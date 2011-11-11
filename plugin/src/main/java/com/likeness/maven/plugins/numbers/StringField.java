@@ -2,8 +2,10 @@ package com.likeness.maven.plugins.numbers;
 
 import static java.lang.String.format;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Objects;
@@ -15,6 +17,22 @@ public class StringField implements PropertyElement
 {
     private final StringDefinition stringDefinition;
     private final ValueProvider valueProvider;
+
+    public static List<StringField> createStrings(final PropertyCache propertyCache, final StringDefinition[] stringDefinitions)
+        throws IOException
+    {
+        final List<StringField> result = Lists.newArrayList();
+
+        if (!ArrayUtils.isEmpty(stringDefinitions)) {
+            for (StringDefinition stringDefinition : stringDefinitions) {
+                stringDefinition.check();
+                final ValueProvider stringValue = propertyCache.getPropertyValue(stringDefinition);
+                final StringField stringField = new StringField(stringDefinition, stringValue);
+                result.add(stringField);
+            }
+        }
+        return result;
+    }
 
     public StringField(final StringDefinition stringDefinition, final ValueProvider valueProvider)
     {

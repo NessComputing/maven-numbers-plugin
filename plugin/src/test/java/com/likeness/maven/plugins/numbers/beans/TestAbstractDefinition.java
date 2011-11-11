@@ -8,7 +8,7 @@ public class TestAbstractDefinition
     @Test
     public void testValidId()
     {
-        final AbstractDefinition ad = new AbstractDefinition() {};
+        final BasicDefinition ad = new BasicDefinition();
 
         ad.setId("hello");
         ad.check();
@@ -17,14 +17,14 @@ public class TestAbstractDefinition
     @Test(expected=IllegalStateException.class)
     public void testUnsetId()
     {
-        final AbstractDefinition ad = new AbstractDefinition() {};
+        final BasicDefinition ad = new BasicDefinition();
         ad.check();
     }
 
     @Test(expected=IllegalStateException.class)
     public void testBlankId()
     {
-        final AbstractDefinition ad = new AbstractDefinition() {};
+        final BasicDefinition ad = new BasicDefinition();
         ad.setId("");
         ad.check();
     }
@@ -32,9 +32,14 @@ public class TestAbstractDefinition
     @Test
     public void testDefaults()
     {
-        final AbstractDefinition ad = new AbstractDefinition() {};
+        final BasicDefinition ad = new BasicDefinition();
         Assert.assertNull(ad.getId());
         Assert.assertFalse(ad.isSkip());
     }
 
+    public static class BasicDefinition extends AbstractDefinition<BasicDefinition>
+    {
+        public BasicDefinition() {
+        }
+    }
 }
