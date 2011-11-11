@@ -10,15 +10,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.google.common.collect.Lists;
 import com.likeness.maven.plugins.numbers.beans.PropertyGroup;
 
-public class PropertyField
+public class PropertyField implements PropertyElement
 {
     private final String propertyName;
     private final String propertyValue;
 
-    public static List<PropertyField> createProperties(final Map<String, String> props, final PropertyGroup [] propertyGroups)
+    public static List<PropertyElement> createProperties(final Map<String, String> props, final PropertyGroup [] propertyGroups)
         throws IOException
     {
-        final List<PropertyField> result = Lists.newArrayList();
+        final List<PropertyElement> result = Lists.newArrayList();
 
         if (!ArrayUtils.isEmpty(propertyGroups)) {
             for (PropertyGroup propertyGroup : propertyGroups) {
@@ -38,14 +38,22 @@ public class PropertyField
         this.propertyValue = propertyValue;
     }
 
+    @Override
     public String getPropertyName()
     {
         return propertyName;
     }
 
+    @Override
     public String getPropertyValue()
     {
         return propertyValue;
+    }
+
+    @Override
+    public boolean isExport()
+    {
+        return true;
     }
 }
 

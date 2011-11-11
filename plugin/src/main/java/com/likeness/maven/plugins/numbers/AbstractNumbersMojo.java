@@ -159,6 +159,11 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
             }
         }
 
-        final List<PropertyField> propertyFields = Lists.newArrayList();
+        final List<PropertyElement> propertyFields = PropertyField.createProperties(props, propertyGroups);
+
+        for (final PropertyElement pe : propertyFields) {
+            final String value = pe.getPropertyValue();
+            project.getProperties().setProperty(pe.getPropertyName(), Objects.firstNonNull(value, ""));
+        }
     }
 }
