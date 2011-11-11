@@ -33,6 +33,7 @@ Configuration
             <propertyGroup>
                 <id>snapshot</id>
                 <activeOnRelease>false</activeOnRelease>
+                <onMissingProperty>ignore</onMissingProperty>
                 <properties>
                     <property>
                         <name>ness.build.number</name>
