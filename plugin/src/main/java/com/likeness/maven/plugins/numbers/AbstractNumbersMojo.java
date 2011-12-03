@@ -2,16 +2,21 @@ package com.likeness.maven.plugins.numbers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.likeness.maven.plugins.numbers.beans.DateDefinition;
+import com.likeness.maven.plugins.numbers.beans.IWFEnum;
 import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
 import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
 import com.likeness.maven.plugins.numbers.beans.PropertyGroup;
@@ -108,9 +113,14 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
 
     protected List<NumberField> numberFields = null;
 
+    private boolean isSnapshot;
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         MavenLogAppender.startPluginLog(this);
+
+        isSnapshot = project.getArtifact().isSnapshot();
+        LOG.debug("Project is a %s.", isSnapshot ? "snapshot" : "release");
 
         try {
             if (skip) {
@@ -162,11 +172,39 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
             }
         }
 
-        final List<PropertyElement> propertyFields = PropertyField.createProperties(props, propertyGroups);
+        // Now generate the property groups.
+        final Map<String, Pair<PropertyGroup, List<PropertyElement>>> propertyElements = Maps.newHashMap();
 
-        for (final PropertyElement pe : propertyFields) {
-            final String value = pe.getPropertyValue();
-            project.getProperties().setProperty(pe.getPropertyName(), Objects.firstNonNull(value, ""));
+        final Set<String> propertyNames = Sets.newHashSet();
+
+
+        if (propertyGroups != null) {
+            for (PropertyGroup propertyGroup : propertyGroups) {
+                final List<PropertyElement> propertyFields = PropertyField.createProperties(props, propertyGroup);
+                propertyElements.put(propertyGroup.getId(), Pair.of(propertyGroup, propertyFields));
+            }
+        }
+
+        if (activeGroups != null) {
+            for (String activeGroup : activeGroups) {
+                final Pair<PropertyGroup, List<PropertyElement>> propertyElement = propertyElements.get(activeGroup);
+                Preconditions.checkState(propertyElement != null, "activated group '%s' does not exist", activeGroup);
+
+                final PropertyGroup propertyGroup = propertyElement.getLeft();
+                if ((propertyGroup.isActiveOnRelease() && !isSnapshot) || (propertyGroup.isActiveOnSnapshot() && isSnapshot)) {
+                    for (final PropertyElement pe : propertyElement.getRight()) {
+                        final String value = pe.getPropertyValue();
+                        final String propertyName = pe.getPropertyName();
+                        IWFEnum.checkState(propertyGroup.getOnDuplicateProperty(), !propertyNames.contains(propertyName), "property name '" + propertyName + "'");
+                        propertyNames.add(propertyName);
+
+                        project.getProperties().setProperty(propertyName, Objects.firstNonNull(value, ""));
+                    }
+                }
+                else {
+                    LOG.debug("Skipping property group %s: Snapshot: %b, onSnapshot: %b, onRelease: %b", activeGroup, isSnapshot, propertyGroup.isActiveOnSnapshot(), propertyGroup.isActiveOnRelease());
+                }
+            }
         }
     }
 }
