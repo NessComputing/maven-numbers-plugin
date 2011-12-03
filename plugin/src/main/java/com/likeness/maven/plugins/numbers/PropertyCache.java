@@ -4,8 +4,10 @@ import static java.lang.String.format;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 import java.util.Properties;
 
@@ -21,9 +23,12 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Closeables;
 import com.likeness.maven.plugins.numbers.beans.AbstractDefinition;
 import com.likeness.maven.plugins.numbers.beans.IWFCEnum;
+import com.likeness.maven.plugins.numbers.util.Log;
 
 public class PropertyCache
 {
+    private static final Log LOG = Log.findLog();
+
     /** Cache for properties files loaded from disk */
     private Map<File, PropertyCacheEntry> propFiles = Maps.newHashMap();
 
@@ -114,12 +119,53 @@ public class PropertyCache
                     }
                 }
                 else {
-                    throw new IllegalStateException(format("Can not load %s, not a file!", definitionPropertyFile));
+                    throw new IllegalStateException(format("Can not load %s, not a file!", definitionPropertyFile.getCanonicalPath()));
                 }
             }
         }
 
         return propertyCacheEntry.getProps();
+    }
+
+    public void persist() throws IOException
+    {
+        for (final Map.Entry<File, PropertyCacheEntry> propFile : propFiles.entrySet())
+        {
+            final PropertyCacheEntry entry = propFile.getValue();
+            final File file = propFile.getKey();
+            if (entry.isExists() || entry.isCreate()) {
+                Preconditions.checkNotNull(file, "no file defined, can not persist!");
+                final File oldFile = new File(file.getCanonicalPath() + ".bak");
+
+                if (entry.isExists()) {
+                    Preconditions.checkState(file.exists(), "File %s should exist!", file.getCanonicalPath());
+                    // unlink an old file if necessary
+                    if (oldFile.exists()) {
+                        oldFile.delete();
+                    }
+                }
+                final File newFile = new File(file.getCanonicalPath() + ".new");
+                OutputStream stream = null;
+                try {
+                    stream = new FileOutputStream(newFile);
+                    entry.getProps().store(stream, "created by maven-numbers-plugin");
+                }
+                finally {
+                    Closeables.closeQuietly(stream);
+                }
+
+                if (file.exists()) {
+                    if (file.renameTo(oldFile)) {
+                        if (!newFile.renameTo(file)) {
+                            LOG.warn("Could not rename '%s' to '%s'!", newFile, file);
+                        }
+                    }
+                    else {
+                        LOG.warn("Could not rename '%s' to '%s'!", file, oldFile);
+                    }
+                }
+            }
+        }
     }
 
     public static class PropertyCacheEntry

@@ -101,9 +101,12 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
 
     protected final Log LOG = Log.findLog();
 
-    private final PropertyCache propertyCache = new PropertyCache();
+    protected final PropertyCache propertyCache = new PropertyCache();
     private final Map<String, String> props = Maps.newHashMap();
+
     private final List<PropertyElement> propertyElements = Lists.newArrayList();
+
+    protected List<NumberField> numberFields = null;
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -114,7 +117,6 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
                 LOG.debug("Skipping execution!");
             }
             else {
-                loadPropertyElements();
                 doExecute();
             }
         }
@@ -141,7 +143,8 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected void loadPropertyElements()
         throws Exception
     {
-        propertyElements.addAll(NumberField.createNumbers(propertyCache, numbers));
+        numberFields = NumberField.createNumbers(propertyCache, numbers);
+        propertyElements.addAll(numberFields);
         propertyElements.addAll(StringField.createStrings(propertyCache, strings));
         propertyElements.addAll(DateField.createDates(propertyCache, dates));
         propertyElements.addAll(MacroField.createMacros(propertyCache, macros));

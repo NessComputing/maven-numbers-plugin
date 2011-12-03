@@ -1,28 +1,18 @@
 package com.likeness.maven.plugins.numbers.beans;
 
-import java.io.StringWriter;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import org.stringtemplate.v4.NoIndentWriter;
-import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STErrorListener;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.misc.ErrorType;
-import org.stringtemplate.v4.misc.STMessage;
+import org.codehaus.plexus.util.StringUtils;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Functions;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterators;
-import com.likeness.maven.plugins.numbers.util.Log;
 
 public class PropertyGroup
 {
-    private static final Log LOG = Log.findLog();
-
     /** Property group id. */
     private String id;
 
@@ -40,8 +30,6 @@ public class PropertyGroup
 
     /** Property definitions in this group. */
     private Properties properties = null;
-
-    private final STGroup stGroup;
 
     @VisibleForTesting
     PropertyGroup(final String id,
@@ -64,7 +52,6 @@ public class PropertyGroup
 
     public PropertyGroup()
     {
-        stGroup = new STGroup('{', '}');
     }
 
     public String getId()
@@ -138,70 +125,15 @@ public class PropertyGroup
 
     public String getPropertyValue(final String propertyName, final Map<String, String> propElements)
     {
-        final String propertyValue = Objects.firstNonNull(properties.getProperty(propertyName), "");
-        final ST st = new ST(stGroup, propertyValue);
+        String propertyValue = Objects.firstNonNull(properties.getProperty(propertyName), "");
 
         for (Map.Entry<String, String> entry : propElements.entrySet()) {
-            st.add(entry.getKey(), entry.getValue());
+            final String key = "#{" + entry.getKey() + "}";
+            propertyValue = StringUtils.replace(propertyValue, key, entry.getValue());
         }
-
-        final PropertyGroupErrorListener errorListener = new PropertyGroupErrorListener();
-        final StringWriter writer = new StringWriter();
-        st.write(new NoIndentWriter(writer), Locale.ENGLISH, errorListener);
-        errorListener.throwException();
-        return writer.toString();
-    }
-
-    public class PropertyGroupErrorListener implements STErrorListener
-    {
-        private IllegalStateException ise = null;
-
-        public void throwException()
-        {
-            if (ise != null) {
-                try {
-                    throw ise;
-                }
-                finally {
-                    this.ise = null;
-                }
-            }
-        }
-
-        @Override
-        public void compileTimeError(STMessage msg)
-        {
-            LOG.error("%s", msg);
-        }
-
-        @Override
-        public void runTimeError(STMessage msg)
-        {
-            if (msg.error == ErrorType.NO_SUCH_ATTRIBUTE) {
-                try {
-                    IWFEnum.checkState(onMissingProperty, false, String.valueOf(msg.arg));
-                }
-                catch (IllegalStateException ise) {
-                    if (this.ise == null) {
-                        this.ise = ise;
-                    }
-                }
-            }
-            else {
-                LOG.error("%s", msg);
-            }
-        }
-
-        @Override
-        public void IOError(STMessage msg)
-        {
-            LOG.error("%s", msg);
-        }
-
-        @Override
-        public void internalError(STMessage msg)
-        {
-            LOG.error("%s", msg);
-        }
+        // Replace all remaining groups.
+        final String result = propertyValue.replaceAll("\\#\\{.*\\}", "");
+        IWFEnum.checkState(getOnMissingProperty(), StringUtils.equals(propertyValue, result), "property");
+        return result;
     }
 }

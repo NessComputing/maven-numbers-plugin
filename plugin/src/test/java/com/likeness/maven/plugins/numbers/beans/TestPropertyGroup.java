@@ -32,7 +32,7 @@ public class TestPropertyGroup
     public void testRenderSingle()
     {
         final Properties props = new Properties();
-        props.setProperty("hello", "{world}");
+        props.setProperty("hello", "#{world}");
 
         PropertyGroup pg = new PropertyGroup("hello", true, true, IWFEnum.FAIL, IWFEnum.FAIL, props);
 
@@ -48,7 +48,7 @@ public class TestPropertyGroup
     public void testRenderEmptyFail()
     {
         final Properties props = new Properties();
-        props.setProperty("hello", "{world}");
+        props.setProperty("hello", "#{world}");
 
         PropertyGroup pg = new PropertyGroup("hello", true, true, IWFEnum.FAIL, IWFEnum.FAIL, props);
 
@@ -64,7 +64,7 @@ public class TestPropertyGroup
     public void testRenderEmptyOk()
     {
         final Properties props = new Properties();
-        props.setProperty("hello", "nice-{world}-hat");
+        props.setProperty("hello", "nice-#{world}-hat");
 
         PropertyGroup pg = new PropertyGroup("hello", true, true, IWFEnum.FAIL, IWFEnum.IGNORE, props);
 
@@ -75,4 +75,21 @@ public class TestPropertyGroup
         final String propValue = pg.getPropertyValue("hello", Collections.<String, String>emptyMap());
         Assert.assertEquals("nice--hat", propValue);
     }
+
+    @Test
+    public void testRenderDotsAreCool()
+    {
+        final Properties props = new Properties();
+        props.setProperty("hello", "nice-#{foo.bar.world}-hat");
+
+        PropertyGroup pg = new PropertyGroup("hello", true, true, IWFEnum.FAIL, IWFEnum.IGNORE, props);
+
+        final List<String> propNames = Lists.newArrayList(pg.getPropertyNames());
+        Assert.assertEquals(1, propNames.size());
+        Assert.assertEquals("hello", propNames.get(0));
+
+        final String propValue = pg.getPropertyValue("hello", ImmutableMap.of("foo.bar.world", "strange"));
+        Assert.assertEquals("nice-strange-hat", propValue);
+    }
+
 }

@@ -33,7 +33,7 @@
                                     <properties>
                                         <property>
                                             <name>mygroup</name>
-                                            <value>{mynumber}-{mystring}-{mydate}</value>
+                                            <value>#{mynumber}-#{mystring}-#{mydate}</value>
                                         </property>
                                     </properties>
                                 </propertyGroup>
