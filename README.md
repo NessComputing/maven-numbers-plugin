@@ -1,6 +1,15 @@
 The Maven Numbers Plugin
 ========================
 
+A maven plugin to manage any type of numbers, fields and timestamps,
+combine them into properties and use them for e.g. build versions in
+maven builds.
+
+----
+Copyright (C) 2011 Ness Computing, Inc.
+
+========================================================================
+
 "Everything Counts (in large amounts)" -- Depeche Mode
 
 "4 8 15 16 23 42" - Lost
