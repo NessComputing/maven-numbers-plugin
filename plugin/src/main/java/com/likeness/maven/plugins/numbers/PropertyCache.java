@@ -141,7 +141,7 @@ public class PropertyCache
                     Preconditions.checkState(file.exists(), "File %s should exist!", file.getCanonicalPath());
                     // unlink an old file if necessary
                     if (oldFile.exists()) {
-                        oldFile.delete();
+                        Preconditions.checkState(oldFile.delete(), "Could not delete '%s'", file.getCanonicalPath());
                     }
                 }
                 final File newFile = new File(file.getCanonicalPath() + ".new");

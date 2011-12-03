@@ -109,8 +109,6 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected final PropertyCache propertyCache = new PropertyCache();
     private final Map<String, String> props = Maps.newHashMap();
 
-    private final List<PropertyElement> propertyElements = Lists.newArrayList();
-
     protected List<NumberField> numberFields = null;
 
     private boolean isSnapshot;
@@ -153,6 +151,8 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
     protected void loadPropertyElements()
         throws Exception
     {
+        final List<PropertyElement> propertyElements = Lists.newArrayList();
+
         numberFields = NumberField.createNumbers(propertyCache, numbers);
         propertyElements.addAll(numberFields);
         propertyElements.addAll(StringField.createStrings(propertyCache, strings));
@@ -173,7 +173,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
         }
 
         // Now generate the property groups.
-        final Map<String, Pair<PropertyGroup, List<PropertyElement>>> propertyElements = Maps.newHashMap();
+        final Map<String, Pair<PropertyGroup, List<PropertyElement>>> propertyPairs = Maps.newHashMap();
 
         final Set<String> propertyNames = Sets.newHashSet();
 
@@ -181,13 +181,13 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
         if (propertyGroups != null) {
             for (PropertyGroup propertyGroup : propertyGroups) {
                 final List<PropertyElement> propertyFields = PropertyField.createProperties(props, propertyGroup);
-                propertyElements.put(propertyGroup.getId(), Pair.of(propertyGroup, propertyFields));
+                propertyPairs.put(propertyGroup.getId(), Pair.of(propertyGroup, propertyFields));
             }
         }
 
         if (activeGroups != null) {
             for (String activeGroup : activeGroups) {
-                final Pair<PropertyGroup, List<PropertyElement>> propertyElement = propertyElements.get(activeGroup);
+                final Pair<PropertyGroup, List<PropertyElement>> propertyElement = propertyPairs.get(activeGroup);
                 Preconditions.checkState(propertyElement != null, "activated group '%s' does not exist", activeGroup);
 
                 final PropertyGroup propertyGroup = propertyElement.getLeft();
