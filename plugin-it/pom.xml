@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.likeness.maven.plugins</groupId>
-        <artifactId>numbers-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <groupId>com.likeness.maven.plugins</groupId>
+    <artifactId>numbers-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 
-    <artifactId>maven-numbers-plugin-it</artifactId>
-    <packaging>jar</packaging>
+  <artifactId>maven-numbers-plugin-it</artifactId>
+  <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -43,32 +43,31 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-            </plugin>
-        </plugins>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/pom.xml</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/pom.xml</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <header>${basedir}/../src/ness/LICENSE-HEADER.txt</header>
+        </configuration>
+      </plugin>
+    </plugins>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/pom.xml</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>**/pom.xml</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
+  </build>
 </project>
