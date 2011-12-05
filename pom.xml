@@ -31,6 +31,12 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>maven-numbers-plugin Maven mojo</name>
 
+  <scm>
+    <connection>scm:git:git://github.com/NessComputing/maven-numbers-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:NessComputing/maven-numbers-plugin.git</developerConnection>
+    <url>http://github.com/NessComputing/maven-numbers-plugin</url>
+  </scm>
+
   <modules>
     <module>plugin</module>
     <module>plugin-it</module>
