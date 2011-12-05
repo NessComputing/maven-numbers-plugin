@@ -48,10 +48,14 @@ import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
 import com.likeness.maven.plugins.numbers.util.Log;
 
 /**
- * Retrieves revisions from the underlying SCM.
+ * Retrieves revisions from the underlying SCM. The SCM API of Maven is not great and has tons of bugs, so this probably only works
+ * somewhat reliably with git and semi-reliably (once SCM-651 is applied) with Mercurial. Any additional testing or patches are welcome.
  *
  * Properties:
  *   requireDeveloperConnection  (true/false) - whether to use the developerConnection or the normal connection from the project pom.
+ *   revision - fetch a revision
+ *   branch - fetch or limit to a branch
+ *   tag - fetch a tag
  *
  * @plexus.component role="com.likeness.maven.plugins.numbers.macros.MacroType" role-hint="scm"
  */
@@ -60,7 +64,7 @@ public class ScmMacro implements MacroType
     private static final Log LOG = Log.findLog();
 
     /**
-     * The SCM manager.
+     * SCM manager.
      *
      * @plexus.requirement
      */
