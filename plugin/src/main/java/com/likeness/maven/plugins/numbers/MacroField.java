@@ -15,8 +15,6 @@
  */
 package com.likeness.maven.plugins.numbers;
 
-import static java.lang.String.format;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -32,8 +30,11 @@ public class MacroField implements PropertyElement
 {
     private final MacroDefinition macroDefinition;
     private final ValueProvider valueProvider;
+    private final AbstractNumbersMojo mojo;
 
-    public static List<MacroField> createMacros(final PropertyCache propertyCache, final MacroDefinition[] macroDefinitions)
+    public static List<MacroField> createMacros(final PropertyCache propertyCache,
+                                                final MacroDefinition[] macroDefinitions,
+                                                final AbstractNumbersMojo mojo)
         throws IOException
     {
         final List<MacroField> result = Lists.newArrayList();
@@ -42,17 +43,20 @@ public class MacroField implements PropertyElement
             for (MacroDefinition macroDefinition : macroDefinitions) {
                 macroDefinition.check();
                 final ValueProvider macroValue = propertyCache.getPropertyValue(macroDefinition);
-                final MacroField macroField = new MacroField(macroDefinition, macroValue);
+                final MacroField macroField = new MacroField(macroDefinition, macroValue, mojo);
                 result.add(macroField);
             }
         }
         return result;
     }
 
-    public MacroField(final MacroDefinition macroDefinition, final ValueProvider valueProvider)
+    public MacroField(final MacroDefinition macroDefinition,
+                      final ValueProvider valueProvider,
+                      final AbstractNumbersMojo mojo)
     {
         this.macroDefinition = macroDefinition;
         this.valueProvider = valueProvider;
+        this.mojo = mojo;
     }
 
     @Override
@@ -69,18 +73,16 @@ public class MacroField implements PropertyElement
         final MacroType macroType;
 
         if (type != null) {
-            macroType = MacroType.EXISTING_MACROS.get(type);
-            Preconditions.checkState(macroType != null, format("Could not load macro type '%s' for macro '%s'!", type, macroDefinition.getId()));
+            macroType = MacroType.class.cast(mojo.getContainer().lookup(MacroType.ROLE, type));
         }
         else {
             final String macroClassName = macroDefinition.getMacroClass();
-            Preconditions.checkState(macroClassName != null,
-                                     format("No definition for macro '%s' found!", macroDefinition.getId()));
+            Preconditions.checkState(macroClassName != null, "No definition for macro '%s' found!", macroDefinition.getId());
             final Class<?> macroClass = Class.forName(macroClassName);
             macroType = MacroType.class.cast(macroClass.newInstance());
         }
 
-        return macroType.getValue(macroDefinition, valueProvider);
+        return macroType.getValue(macroDefinition, valueProvider, mojo);
     }
 
     @Override

@@ -64,7 +64,7 @@ public class NumberField implements PropertyElement
     @Override
     public String getPropertyName()
     {
-        // This is not the property name (because many definitions can map onto one prop) 
+        // This is not the property name (because many definitions can map onto one prop)
         // but the actual id.
         return numberDefinition.getId();
     }

@@ -15,6 +15,7 @@
  */
 package com.likeness.maven.plugins.numbers;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +25,12 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -42,7 +49,7 @@ import com.pyx4j.log4j.MavenLogAppender;
 /**
  * Base code for all the mojos.
  */
-public abstract class AbstractNumbersMojo extends AbstractMojo
+public abstract class AbstractNumbersMojo extends AbstractMojo implements Contextualizable
 {
     /**
      * The maven project (effective pom).
@@ -51,6 +58,20 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
      * @readonly
     */
     protected MavenProject project;
+
+    /**
+     * @parameter expression="${settings}"
+     * @required
+     * @readonly
+     */
+    protected Settings settings;
+
+    /**
+     * @parameter expression="${basedir}"
+     * @required
+     * @readonly
+     */
+    protected File basedir;
 
     /**
      * Skip the plugin execution.
@@ -126,6 +147,8 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
 
     protected List<NumberField> numberFields = null;
 
+    private PlexusContainer container = null;
+
     private boolean isSnapshot;
 
     public void execute() throws MojoExecutionException, MojoFailureException
@@ -158,6 +181,36 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
         }
     }
 
+    public MavenProject getProject()
+    {
+        Preconditions.checkNotNull(project);
+        return project;
+    }
+
+    public Settings getSettings()
+    {
+        Preconditions.checkNotNull(settings);
+        return settings;
+    }
+
+    public File getBasedir()
+    {
+        Preconditions.checkNotNull(basedir);
+        return basedir;
+    }
+
+    public PlexusContainer getContainer()
+    {
+        Preconditions.checkNotNull(container);
+        return container;
+    }
+
+    @Override
+    public void contextualize(final Context context) throws ContextException
+    {
+        this.container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
+    }
+
     /**
      * Subclasses need to implement this method.
      */
@@ -172,7 +225,7 @@ public abstract class AbstractNumbersMojo extends AbstractMojo
         propertyElements.addAll(numberFields);
         propertyElements.addAll(StringField.createStrings(propertyCache, strings));
         propertyElements.addAll(DateField.createDates(propertyCache, dates));
-        propertyElements.addAll(MacroField.createMacros(propertyCache, macros));
+        propertyElements.addAll(MacroField.createMacros(propertyCache, macros, this));
 
         for (final PropertyElement pe : propertyElements) {
             final String value = pe.getPropertyValue();

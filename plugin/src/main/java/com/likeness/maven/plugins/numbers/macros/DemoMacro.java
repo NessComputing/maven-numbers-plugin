@@ -15,14 +15,25 @@
  */
 package com.likeness.maven.plugins.numbers.macros;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+import com.likeness.maven.plugins.numbers.AbstractNumbersMojo;
 import com.likeness.maven.plugins.numbers.ValueProvider;
 import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
 
+/**
+ * @plexus.component role="com.likeness.maven.plugins.numbers.macros.MacroType" role-hint="demo"
+ */
 public class DemoMacro implements MacroType
 {
     @Override
-    public String getValue(final MacroDefinition macroDefinition, final ValueProvider valueProvider)
+    public String getValue(@Nonnull final MacroDefinition macroDefinition,
+                           @Nonnull final ValueProvider valueProvider,
+                           @Nonnull final AbstractNumbersMojo mojo)
     {
+        Preconditions.checkState(mojo != null, "inserted mojo is null!");
+
         final String type = macroDefinition.getProperties().getProperty("type", "static");
         if ("static".equals(type)) {
             return "static-value";

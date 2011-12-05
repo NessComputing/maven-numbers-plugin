@@ -17,14 +17,44 @@ package com.likeness.maven.plugins.numbers;
 
 import java.util.Properties;
 
+import javax.annotation.Nonnull;
+
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.PlexusContainer;
+import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
+import com.likeness.maven.plugins.numbers.macros.DemoMacro;
 import com.likeness.maven.plugins.numbers.macros.MacroType;
 
 public class TestMacroField
 {
+    private PlexusContainer fakeContainer = null;
+    private MavenProject fakeProject = null;
+    private AbstractNumbersMojo fakeMojo = null;
+
+    @Before
+    public void setUp() throws Exception
+    {
+        fakeContainer = EasyMock.createNiceMock(PlexusContainer.class);
+        EasyMock.expect(fakeContainer.lookup(MacroType.ROLE, "demo")).andReturn(new DemoMacro()).anyTimes();
+        fakeProject = EasyMock.createNiceMock(MavenProject.class);
+        fakeMojo = EasyMock.createNiceMock(AbstractNumbersMojo.class);
+        EasyMock.expect(fakeMojo.getProject()).andReturn(fakeProject).anyTimes();
+        EasyMock.expect(fakeMojo.getContainer()).andReturn(fakeContainer).anyTimes();
+        EasyMock.replay(fakeContainer, fakeProject, fakeMojo);
+    }
+
+    @After
+    public void tearDown()
+    {
+        EasyMock.verify(fakeContainer, fakeProject, fakeMojo);
+    }
+
     @Test
     public void testSimpleStatic()
             throws Exception
@@ -39,7 +69,7 @@ public class TestMacroField
 
         m1.check();
 
-        final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER);
+        final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER, fakeMojo);
         Assert.assertEquals("static-value", sm1.getPropertyValue());
     }
 
@@ -58,7 +88,7 @@ public class TestMacroField
 
         m1.check();
 
-        final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER);
+        final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER, fakeMojo);
         Assert.assertEquals("brains", sm1.getPropertyValue());
     }
 
@@ -78,7 +108,7 @@ public class TestMacroField
 
         final Properties props = new Properties();
         props.setProperty("hello", "foo");
-        final MacroField sm1 = new MacroField(m1, new ValueProvider.PropertyProvider(props, m1.getPropertyName()));
+        final MacroField sm1 = new MacroField(m1, new ValueProvider.PropertyProvider(props, m1.getPropertyName()), fakeMojo);
         Assert.assertEquals("foo", sm1.getPropertyValue());
     }
 
@@ -92,14 +122,16 @@ public class TestMacroField
 
         m1.check();
 
-        final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER);
+        final MacroField sm1 = new MacroField(m1, ValueProvider.NULL_PROVIDER, fakeMojo);
         Assert.assertEquals("TestValue", sm1.getPropertyValue());
     }
 
     public static class TestMacro implements MacroType
     {
         @Override
-        public String getValue(final MacroDefinition macroDefinition, final ValueProvider valueProvider)
+        public String getValue(@Nonnull final MacroDefinition macroDefinition,
+                               @Nonnull final ValueProvider valueProvider,
+                               @Nonnull final AbstractNumbersMojo mojo)
         {
             return "TestValue";
         }
