@@ -71,6 +71,7 @@ public class TestPropertyCache
     }
 
     @Test(expected = IllegalStateException.class)
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value="DMI_HARDCODED_ABSOLUTE_FILENAME", justification="unit test")
     public void testMissingPropertyFileFail()
             throws IOException
     {

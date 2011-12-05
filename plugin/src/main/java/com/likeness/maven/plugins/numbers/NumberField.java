@@ -100,7 +100,7 @@ public class NumberField implements PropertyElement
             }
         }
 
-        Preconditions.checkState(numberElements.size() > numberDefinition.getFieldNumber(), format("Only %d fields in %s, field %d requested.", numberElements.size(), value, numberDefinition.getFieldNumber()));
+        Preconditions.checkState(numberElements.size() > numberDefinition.getFieldNumber(), "Only %d fields in %s, field %d requested.", numberElements.size(), value, numberDefinition.getFieldNumber());
     }
 
     private boolean isNumber(final CharSequence c) {
