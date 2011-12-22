@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import static java.lang.String.format;
 
@@ -36,9 +36,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.io.Closeables;
-import com.likeness.maven.plugins.numbers.beans.AbstractDefinition;
-import com.likeness.maven.plugins.numbers.beans.IWFCEnum;
-import com.likeness.maven.plugins.numbers.util.Log;
+import com.likeness.mojo.numbers.beans.AbstractDefinition;
+import com.likeness.mojo.numbers.beans.IWFCEnum;
+import com.likeness.mojo.numbers.util.Log;
 
 public class PropertyCache
 {

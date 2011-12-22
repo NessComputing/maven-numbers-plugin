@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers.beans;
+package com.likeness.mojo.numbers.beans;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +24,8 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.likeness.mojo.numbers.beans.IWFEnum;
+import com.likeness.mojo.numbers.beans.PropertyGroup;
 
 public class TestPropertyGroup
 {

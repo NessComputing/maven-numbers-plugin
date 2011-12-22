@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,7 +26,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.io.Closeables;
-import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
+import com.likeness.mojo.numbers.PropertyCache;
+import com.likeness.mojo.numbers.ValueProvider;
+import com.likeness.mojo.numbers.beans.NumberDefinition;
 
 public class TestPropertyCache
 {

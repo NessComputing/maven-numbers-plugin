@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers.macros;
+package com.likeness.mojo.numbers.macros;
 
 import java.util.List;
 import java.util.Properties;
@@ -41,11 +41,11 @@ import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
 
 import com.google.common.base.Preconditions;
-import com.likeness.maven.plugins.numbers.AbstractNumbersMojo;
-import com.likeness.maven.plugins.numbers.ValueProvider;
-import com.likeness.maven.plugins.numbers.beans.IWFCEnum;
-import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
-import com.likeness.maven.plugins.numbers.util.Log;
+import com.likeness.mojo.numbers.AbstractNumbersMojo;
+import com.likeness.mojo.numbers.ValueProvider;
+import com.likeness.mojo.numbers.beans.IWFCEnum;
+import com.likeness.mojo.numbers.beans.MacroDefinition;
+import com.likeness.mojo.numbers.util.Log;
 
 /**
  * Retrieves revisions from the underlying SCM. The SCM API of Maven is not great and has tons of bugs, so this probably only works
@@ -57,7 +57,7 @@ import com.likeness.maven.plugins.numbers.util.Log;
  *   branch - fetch or limit to a branch
  *   tag - fetch a tag
  *
- * @plexus.component role="com.likeness.maven.plugins.numbers.macros.MacroType" role-hint="scm"
+ * @plexus.component role="com.likeness.mojo.numbers.macros.MacroType" role-hint="scm"
  */
 public class ScmMacro implements MacroType
 {

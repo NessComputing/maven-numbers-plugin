@@ -13,7 +13,7 @@
 
         <plugins>
             <plugin>
-                <groupId>com.likeness.maven.plugins</groupId>
+                <groupId>com.likeness.mojo</groupId>
                 <artifactId>maven-numbers-plugin</artifactId>
                 <version>@project.version@</version>
                 <executions>

@@ -19,12 +19,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.nesscomputing</groupId>
+    <groupId>com.likeness</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>1-SNAPSHOT</version>
+    <version>1</version>
   </parent>
 
-  <groupId>com.likeness.maven.plugins</groupId>
+  <groupId>com.likeness.mojo</groupId>
   <artifactId>numbers-parent</artifactId>
   <packaging>pom</packaging>
 

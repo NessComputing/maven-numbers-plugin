@@ -19,7 +19,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.likeness.maven.plugins</groupId>
+    <groupId>com.likeness.mojo</groupId>
     <artifactId>numbers-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>

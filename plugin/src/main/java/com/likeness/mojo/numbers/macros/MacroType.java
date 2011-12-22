@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers.macros;
+package com.likeness.mojo.numbers.macros;
 
-import com.likeness.maven.plugins.numbers.AbstractNumbersMojo;
-import com.likeness.maven.plugins.numbers.ValueProvider;
-import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
+import com.likeness.mojo.numbers.AbstractNumbersMojo;
+import com.likeness.mojo.numbers.ValueProvider;
+import com.likeness.mojo.numbers.beans.MacroDefinition;
 
 public interface MacroType
 {

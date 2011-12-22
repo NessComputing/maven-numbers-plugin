@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers.beans;
+package com.likeness.mojo.numbers.beans;
 
 import static java.lang.String.format;
 
 import java.util.Locale;
 
 import com.google.common.base.Preconditions;
-import com.likeness.maven.plugins.numbers.util.Log;
+import com.likeness.mojo.numbers.util.Log;
 
 public enum IWFEnum
 {

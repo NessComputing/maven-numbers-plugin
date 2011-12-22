@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import static java.lang.String.format;
 
@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
+import com.likeness.mojo.numbers.beans.NumberDefinition;
 
 public class NumberField implements PropertyElement
 {

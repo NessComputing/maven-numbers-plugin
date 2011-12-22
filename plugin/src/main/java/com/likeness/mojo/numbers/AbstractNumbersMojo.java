@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import java.io.File;
 import java.util.List;
@@ -37,13 +37,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.likeness.maven.plugins.numbers.beans.DateDefinition;
-import com.likeness.maven.plugins.numbers.beans.IWFEnum;
-import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
-import com.likeness.maven.plugins.numbers.beans.NumberDefinition;
-import com.likeness.maven.plugins.numbers.beans.PropertyGroup;
-import com.likeness.maven.plugins.numbers.beans.StringDefinition;
-import com.likeness.maven.plugins.numbers.util.Log;
+import com.likeness.mojo.numbers.beans.DateDefinition;
+import com.likeness.mojo.numbers.beans.IWFEnum;
+import com.likeness.mojo.numbers.beans.MacroDefinition;
+import com.likeness.mojo.numbers.beans.NumberDefinition;
+import com.likeness.mojo.numbers.beans.PropertyGroup;
+import com.likeness.mojo.numbers.beans.StringDefinition;
+import com.likeness.mojo.numbers.util.Log;
 import com.pyx4j.log4j.MavenLogAppender;
 
 /**

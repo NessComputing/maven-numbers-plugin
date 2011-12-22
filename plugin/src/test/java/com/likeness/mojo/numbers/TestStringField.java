@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import java.util.List;
 import java.util.Properties;
@@ -23,7 +23,10 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.likeness.maven.plugins.numbers.beans.StringDefinition;
+import com.likeness.mojo.numbers.PropertyCache;
+import com.likeness.mojo.numbers.StringField;
+import com.likeness.mojo.numbers.ValueProvider;
+import com.likeness.mojo.numbers.beans.StringDefinition;
 
 public class TestStringField
 {

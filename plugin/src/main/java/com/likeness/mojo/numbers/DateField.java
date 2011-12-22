@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,7 +25,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.collect.Lists;
-import com.likeness.maven.plugins.numbers.beans.DateDefinition;
+import com.likeness.mojo.numbers.beans.DateDefinition;
 
 public class DateField implements PropertyElement
 {

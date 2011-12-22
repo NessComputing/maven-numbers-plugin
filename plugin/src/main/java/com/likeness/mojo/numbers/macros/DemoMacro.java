@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers.macros;
+package com.likeness.mojo.numbers.macros;
 
 import javax.annotation.Nonnull;
 
 import com.google.common.base.Preconditions;
-import com.likeness.maven.plugins.numbers.AbstractNumbersMojo;
-import com.likeness.maven.plugins.numbers.ValueProvider;
-import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
+import com.likeness.mojo.numbers.AbstractNumbersMojo;
+import com.likeness.mojo.numbers.ValueProvider;
+import com.likeness.mojo.numbers.beans.MacroDefinition;
 
 /**
- * @plexus.component role="com.likeness.maven.plugins.numbers.macros.MacroType" role-hint="demo"
+ * @plexus.component role="com.likeness.mojo.numbers.macros.MacroType" role-hint="demo"
  */
 public class DemoMacro implements MacroType
 {

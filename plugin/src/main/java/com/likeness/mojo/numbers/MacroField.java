@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,8 +23,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
-import com.likeness.maven.plugins.numbers.macros.MacroType;
+import com.likeness.mojo.numbers.beans.MacroDefinition;
+import com.likeness.mojo.numbers.macros.MacroType;
 
 public class MacroField implements PropertyElement
 {

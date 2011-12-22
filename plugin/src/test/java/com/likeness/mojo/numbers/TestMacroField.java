@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.likeness.maven.plugins.numbers;
+package com.likeness.mojo.numbers;
 
 import java.util.Properties;
 
@@ -27,9 +27,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.likeness.maven.plugins.numbers.beans.MacroDefinition;
-import com.likeness.maven.plugins.numbers.macros.DemoMacro;
-import com.likeness.maven.plugins.numbers.macros.MacroType;
+import com.likeness.mojo.numbers.AbstractNumbersMojo;
+import com.likeness.mojo.numbers.MacroField;
+import com.likeness.mojo.numbers.ValueProvider;
+import com.likeness.mojo.numbers.beans.MacroDefinition;
+import com.likeness.mojo.numbers.macros.DemoMacro;
+import com.likeness.mojo.numbers.macros.MacroType;
 
 public class TestMacroField
 {
