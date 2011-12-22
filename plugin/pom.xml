@@ -21,7 +21,7 @@
   <parent>
     <groupId>com.likeness.mojo</groupId>
     <artifactId>numbers-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
 
   <artifactId>maven-numbers-plugin</artifactId>

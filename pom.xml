@@ -28,7 +28,7 @@
   <artifactId>numbers-parent</artifactId>
   <packaging>pom</packaging>
 
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>maven-numbers-plugin Maven mojo</name>
 
   <scm>
