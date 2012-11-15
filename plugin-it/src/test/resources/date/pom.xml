@@ -12,8 +12,8 @@
 
         <plugins>
             <plugin>
-                <groupId>com.likeness.mojo</groupId>
-                <artifactId>maven-numbers-plugin</artifactId>
+                <groupId>com.nesscomputing.mojo</groupId>
+                <artifactId>numbers-maven-plugin</artifactId>
                 <version>@project.version@</version>
                 <executions>
                     <execution>
