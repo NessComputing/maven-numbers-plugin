@@ -21,7 +21,7 @@
   <parent>
     <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>20</version>
+    <version>29</version>
   </parent>
 
   <groupId>com.nesscomputing.mojo</groupId>
@@ -122,27 +122,9 @@
       </dependency>
 
       <dependency>
-        <groupId>com.google.code.findbugs</groupId>
-        <artifactId>jsr305</artifactId>
-        <version>2.0.0</version>
-      </dependency>
-
-      <dependency>
         <groupId>com.nesscomputing.testing</groupId>
         <artifactId>findbugs-annotations</artifactId>
         <version>2.0.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>13.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>3.1</version>
       </dependency>
 
       <dependency>
@@ -152,21 +134,9 @@
       </dependency>
 
       <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.16</version>
-      </dependency>
-
-      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
-        <version>1.6.4</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>1.6.4</version>
+        <version>1.6.6</version>
       </dependency>
 
       <dependency>
@@ -185,18 +155,6 @@
             <artifactId>junit</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.easymock</groupId>
-        <artifactId>easymock</artifactId>
-        <version>3.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit-dep</artifactId>
-        <version>4.10</version>
       </dependency>
 
       <!-- scm providers -->
@@ -302,7 +260,20 @@
         <version>${dep.scm.version}</version>
       </dependency>
       <!-- scm providers -->
+
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>3.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.objenesis</groupId>
+        <artifactId>objenesis</artifactId>
+        <version>1.3</version>
+      </dependency>
     </dependencies>
+
   </dependencyManagement>
 
   <build>
@@ -314,6 +285,8 @@
           <version>1.3.8</version>
           <executions>
             <execution>
+	      <id>descriptor</id>
+              <phase>generate-resources</phase>
               <goals>
                 <goal>descriptor</goal>
               </goals>
@@ -327,11 +300,11 @@
       <plugin>
         <groupId>com.ning.maven.plugins</groupId>
         <artifactId>maven-duplicate-finder-plugin</artifactId>
-          <configuration>
-            <ignoredResources combine.children="append">
-              <ignoredResource>log4j\.xml</ignoredResource>
-            </ignoredResources>
-          </configuration>
+        <configuration>
+          <ignoredResources combine.children="append">
+            <ignoredResource>log4j\.xml</ignoredResource>
+          </ignoredResources>
+        </configuration>
       </plugin>
     </plugins>
   </build>
