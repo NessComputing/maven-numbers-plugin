@@ -32,6 +32,7 @@ import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmRevision;
 import org.apache.maven.scm.ScmTag;
 import org.apache.maven.scm.ScmVersion;
+import org.apache.maven.scm.command.changelog.ChangeLogScmRequest;
 import org.apache.maven.scm.command.changelog.ChangeLogScmResult;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.provider.ScmProviderRepositoryWithHost;
@@ -39,27 +40,26 @@ import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.component.annotations.Component;
 
+import com.google.common.base.Preconditions;
 import com.nesscomputing.mojo.numbers.AbstractNumbersMojo;
 import com.nesscomputing.mojo.numbers.ValueProvider;
 import com.nesscomputing.mojo.numbers.beans.IWFCEnum;
 import com.nesscomputing.mojo.numbers.beans.MacroDefinition;
 import com.nesscomputing.mojo.numbers.util.Log;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Retrieves revisions from the underlying SCM. The SCM API of Maven is not great and has tons of bugs, so this probably only works
- * somewhat reliably with git and semi-reliably (once SCM-651 is applied) with Mercurial. Any additional testing or patches are welcome.
- *
+ * somewhat reliably with git and semi-reliably (once SCM-651 is applied) with Mercurial. Any additional testing or patches are
+ * welcome.
  * Properties:
- *   requireDeveloperConnection  (true/false) - whether to use the developerConnection or the normal connection from the project pom.
- *   revision - fetch a revision
- *   branch - fetch or limit to a branch
- *   tag - fetch a tag
- *
- * @plexus.component role="com.nesscomputing.mojo.numbers.macros.MacroType" role-hint="scm"
+ * requireDeveloperConnection (true/false) - whether to use the developerConnection or the normal connection from the project pom.
+ * revision - fetch a revision
+ * branch - fetch or limit to a branch
+ * tag - fetch a tag
  */
+@Component(role = MacroType.class, hint = "scm")
 public class ScmMacro implements MacroType
 {
     private static final Log LOG = Log.findLog();
@@ -69,7 +69,7 @@ public class ScmMacro implements MacroType
      *
      * @plexus.requirement
      */
-    public ScmManager scmManager = null;  // yes, jason, this *is* your fault.
+    public ScmManager scmManager = null; // yes, jason, this *is* your fault.
 
     public void setScmManager(ScmManager scmManager)
     {
@@ -85,7 +85,6 @@ public class ScmMacro implements MacroType
         final Properties props = macroDefinition.getProperties();
         final ScmRepository scmRepo = getScmRepository(mojo.getProject(), mojo.getSettings(), props);
 
-
         final String revision = props.getProperty("revision");
         final String branch = props.getProperty("branch");
         final String tag = props.getProperty("tag");
@@ -95,18 +94,21 @@ public class ScmMacro implements MacroType
         final ScmTag scmTag = (tag == null) ? null : new ScmTag(tag);
 
         final ScmFileSet fileSet = new ScmFileSet(mojo.getBasedir());
-        final ChangeLogScmResult result;
 
         final String rev;
+        final ChangeLogScmRequest req = new ChangeLogScmRequest(scmRepo, fileSet);
+
         if (branch != null) {
             rev = scmBranch.getName();
-            result = scmManager.changeLog(scmRepo,  fileSet, null, null, 0, scmBranch);
+            req.setScmBranch(scmBranch);
         }
         else {
             final ScmVersion scmVersion = ObjectUtils.defaultIfNull(scmTag, scmRevision);
-            rev = (scmVersion != null) ? scmVersion.getName(): "<unset>";
-            result = scmManager.changeLog(scmRepo, fileSet, null, scmVersion);
+            rev = (scmVersion != null) ? scmVersion.getName() : "<unset>";
+            req.setEndRevision(scmVersion);
         }
+
+        final ChangeLogScmResult result = scmManager.changeLog(req);
 
         IWFCEnum.checkState(macroDefinition.getOnMissingProperty(), result.isSuccess(), "scm revision '" + rev + "'");
 
@@ -134,7 +136,7 @@ public class ScmMacro implements MacroType
                 final ScmProviderRepositoryWithHost repo = (ScmProviderRepositoryWithHost) repository.getProviderRepository();
                 final Server server = settings.getServer(repo.getHost());
 
-                if ( server != null )
+                if (server != null)
                 {
                     repo.setUser(server.getUsername());
                     repo.setPassword(server.getPassword());
@@ -158,7 +160,6 @@ public class ScmMacro implements MacroType
 
         return repository;
     }
-
 
     public String getConnectionUrl(final Scm scm, final Properties props)
     {

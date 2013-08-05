@@ -27,6 +27,10 @@
   <artifactId>numbers-maven-plugin-it</artifactId>
   <packaging>jar</packaging>
 
+  <properties>
+    <ness.root.dir>${project.parent.basedir}</ness.root.dir>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -46,7 +50,7 @@
 
     <dependency>
       <groupId>junit</groupId>
-      <artifactId>junit-dep</artifactId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -58,15 +62,6 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <configuration>
-          <header>${basedir}/../src/ness/LICENSE-HEADER.txt</header>
-        </configuration>
-      </plugin>
-    </plugins>
     <testResources>
       <testResource>
         <directory>src/test/resources</directory>

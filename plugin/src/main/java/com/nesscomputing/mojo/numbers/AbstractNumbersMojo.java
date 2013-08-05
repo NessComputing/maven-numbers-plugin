@@ -54,21 +54,21 @@ public abstract class AbstractNumbersMojo extends AbstractMojo implements Contex
 {
     /**
      * The maven project (effective pom).
-     * @parameter expression="${project}"
+     * @parameter property="project"
      * @required
      * @readonly
     */
     protected MavenProject project;
 
     /**
-     * @parameter expression="${settings}"
+     * @parameter property="settings"
      * @required
      * @readonly
      */
     protected Settings settings;
 
     /**
-     * @parameter expression="${basedir}"
+     * @parameter property="basedir"
      * @required
      * @readonly
      */
