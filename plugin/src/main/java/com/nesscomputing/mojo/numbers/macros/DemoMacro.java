@@ -15,6 +15,8 @@
  */
 package com.nesscomputing.mojo.numbers.macros;
 
+import org.codehaus.plexus.component.annotations.Component;
+
 import javax.annotation.Nonnull;
 
 import com.google.common.base.Preconditions;
@@ -23,9 +25,7 @@ import com.nesscomputing.mojo.numbers.AbstractNumbersMojo;
 import com.nesscomputing.mojo.numbers.ValueProvider;
 import com.nesscomputing.mojo.numbers.beans.MacroDefinition;
 
-/**
- * @plexus.component role="com.nesscomputing.mojo.numbers.macros.MacroType" role-hint="demo"
- */
+@Component(role=MacroType.class, hint="demo")
 public class DemoMacro implements MacroType
 {
     @Override
