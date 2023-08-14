@@ -19,12 +19,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.nesscomputing</groupId>
-    <artifactId>ness-oss-parent</artifactId>
-    <version>29</version>
+    <groupId>org.basepom</groupId>
+    <artifactId>basepom-oss</artifactId>
+    <version>55</version>
   </parent>
 
-  <groupId>com.nesscomputing.mojo</groupId>
+  <groupId>com.paywholesail.mojo</groupId>
   <artifactId>numbers-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -32,9 +32,9 @@
   <name>maven-numbers-plugin Maven mojo</name>
 
   <scm>
-    <connection>scm:git:git://github.com/NessComputing/maven-numbers-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:NessComputing/maven-numbers-plugin.git</developerConnection>
-    <url>http://github.com/NessComputing/maven-numbers-plugin</url>
+    <connection>scm:git:git://gitlab.com/wholesail/maven-numbers-plugin.git</connection>
+    <developerConnection>scm:git:git@gitlab.com:wholesail/maven-numbers-plugin.git</developerConnection>
+    <url>http://gitlab.com/wholesail/maven-numbers-plugin</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -44,11 +44,14 @@
   </modules>
 
   <properties>
-    <project.build.targetJdk>1.6</project.build.targetJdk>
+    <project.build.targetJdk>17</project.build.targetJdk>
 
     <dep.maven.version>2.2.1</dep.maven.version>
-    <dep.scm.version>1.8.1</dep.scm.version>
-    <dep.plexus.version>1.5.5</dep.plexus.version>
+    <dep.scm.version>2.0.1</dep.scm.version>
+    <dep.plexus.version>2.1.1</dep.plexus.version>
+    <dep.slf4j.version>2.0.7</dep.slf4j.version>
+
+    <basepom.check.skip-spotbugs>true</basepom.check.skip-spotbugs>
   </properties>
 
   <dependencyManagement>
@@ -75,6 +78,12 @@
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-settings</artifactId>
         <version>${dep.maven.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-xml-impl</artifactId>
+        <version>4.0.0-alpha-7</version>
       </dependency>
 
       <dependency>
@@ -110,7 +119,18 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.0.13</version>
+        <version>4.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-xml</artifactId>
+        <version>4.0.0</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.sisu</groupId>
+            <artifactId>org.eclipse.sisu.plexus</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -140,33 +160,9 @@
       </dependency>
 
       <dependency>
-        <groupId>com.nesscomputing.testing</groupId>
-        <artifactId>findbugs-annotations</artifactId>
-        <version>2.0.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>joda-time</groupId>
-        <artifactId>joda-time</artifactId>
-        <version>2.2</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
-        <version>1.6.6</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.pyx4j</groupId>
-        <artifactId>maven-plugin-log4j</artifactId>
-        <version>1.0.1</version>
-      </dependency>
-
-      <dependency>
         <groupId>org.apache.maven.shared</groupId>
         <artifactId>maven-verifier</artifactId>
-        <version>1.4</version>
+        <version>1.8.0</version>
         <exclusions>
           <exclusion>
             <groupId>junit</groupId>
@@ -176,42 +172,6 @@
       </dependency>
 
       <!-- scm providers -->
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-accurev</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-bazaar</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-clearcase</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-cvs-commons</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-cvsexe</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-cvsjava</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>org.apache.maven.scm</groupId>
         <artifactId>maven-scm-provider-git-commons</artifactId>
@@ -238,18 +198,6 @@
 
       <dependency>
         <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-perforce</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-starteam</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
         <artifactId>maven-scm-provider-svn-commons</artifactId>
         <version>${dep.scm.version}</version>
       </dependency>
@@ -259,39 +207,44 @@
         <artifactId>maven-scm-provider-svnexe</artifactId>
         <version>${dep.scm.version}</version>
       </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-synergy</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-vss</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-tfs</artifactId>
-        <version>${dep.scm.version}</version>
-      </dependency>
       <!-- scm providers -->
 
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
-        <version>3.2</version>
+        <version>5.1.0</version>
       </dependency>
 
       <dependency>
         <groupId>org.objenesis</groupId>
         <artifactId>objenesis</artifactId>
-        <version>1.3</version>
+        <version>3.3</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>32.1.2-jre</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.13.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${dep.slf4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
       </dependency>
     </dependencies>
-
   </dependencyManagement>
 
   <build>
@@ -322,15 +275,16 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.2</version>
+          <version>3.9.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
 
     <plugins>
       <plugin>
-        <groupId>com.ning.maven.plugins</groupId>
+        <groupId>org.basepom</groupId>
         <artifactId>maven-duplicate-finder-plugin</artifactId>
+        <version>1.5.1</version>
         <configuration>
           <ignoredResources combine.children="append">
             <ignoredResource>log4j\.xml</ignoredResource>
@@ -340,26 +294,12 @@
     </plugins>
   </build>
 
-  <profiles>
-    <profile>
-      <id>cross-compile</id>
-      <activation>
-        <jdk>(1.6,]</jdk>
-      </activation>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                <compilerArguments children.combine="append">
-                  <bootclasspath>${env.JAVA6_HOME}/jre/lib/rt.jar:${env.JAVA6_HOME}/jre/lib/jce.jar</bootclasspath>
-                </compilerArguments>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
-    </profile>
-  </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${dep.slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
